@@ -6,13 +6,13 @@ using System.Web;
 
 namespace efVideoTube.Models {
     public static class SubtitleLanguageParser {
-        private const string defaultLanguage = sc;
+        public const string DefaultLanguage = sc;
         private const string sc = "zh-cn";
         private const string tc = "zh-tw";
         private const string jp = "ja-jp";
         private const string en = "en-us";
 
-        private static readonly Dictionary<string, string> extLangMaps = new Dictionary<string, string>{
+        private static readonly Dictionary<string, string> extLangMaps = new Dictionary<string, string> {
             { ".sc", sc }, { ".chs", sc },
             { ".tc", tc }, { ".cht", tc },
             { ".jp", jp }, { ".jpn", jp },
@@ -25,7 +25,7 @@ namespace efVideoTube.Models {
                 if (fileNameWithoutExt.EndsWith(extLang.Key, StringComparison.OrdinalIgnoreCase))
                     return extLang.Value;
             }
-            return defaultLanguage;
+            return DefaultLanguage;
         }
     }
 }

@@ -9,7 +9,7 @@ using PureLib.Common;
 namespace efVideoTube.Models {
     public static class Global {
         public const string VideoFilter = "*.mp4";
-        public const string VttExt = "vtt";
+        public const string VttExt = ".vtt";
         public static string[] SupportedSubTypes { get; private set; }
         public static Dictionary<string, string> CategoryPathMaps { get; private set; }
 

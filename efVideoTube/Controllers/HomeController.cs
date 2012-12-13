@@ -90,7 +90,7 @@ namespace efVideoTube.Controllers {
                     }
 
                     if (!subContent.IsNullOrEmpty())
-                        return File(Encoding.UTF8.GetBytes(subContent), "text/vtt", Path.GetFileName(path));
+                        return File(Encoding.UTF8.GetBytes(subContent), "text/vtt");
                 }
             }
             return null;

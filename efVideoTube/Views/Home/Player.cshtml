@@ -9,14 +9,14 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>@Model.Video</title>
+    <title>@Path.GetFileName(Model.Video)</title>
     <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
 </head>
 <body>
     <div>
         <video controls autoplay src="@Url.Action("Video", new { path = Model.Video })">
         @foreach (var subLang in Model.SubtitleLanguages) {
-            <track kind="subtitles" src="@Url.Action("Subtitle", new { path = subLang.Key })" srclang="@subLang.Value" label="@subLang.Value" />
+            <track kind="subtitles" src="@Url.Action("Subtitle", new { path = subLang.Key })" srclang="@subLang.Value" label="@subLang.Value" @(subLang.Value == SubtitleLanguageParser.DefaultLanguage ? "default" : string.Empty) />
         }
         </video>
     </div>
