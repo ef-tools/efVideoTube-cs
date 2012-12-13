@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using efVideoTube.Models;
 using PureLib.Common;
 using SrtLib;
+using VikingErik.Mvc.ResumingActionResults;
 using IOFile = System.IO.File;
 
 namespace efVideoTube.Controllers {
@@ -58,14 +59,14 @@ namespace efVideoTube.Controllers {
             return null;
         }
 
-        public FilePathResult Video(string path) {
+        public ResumingFilePathResult Video(string path) {
             if (!path.IsNullOrEmpty()) {
                 string physicalPath;
                 string category;
                 GetPhysicalPathAndCategory(path, out physicalPath, out category);
 
                 if (!physicalPath.IsNullOrEmpty() && IOFile.Exists(physicalPath))
-                    return File(physicalPath, "video/mp4");
+                    return new ResumingFilePathResult(physicalPath, "video/mp4", Path.GetFileName(physicalPath));
             }
             return null;
         }
@@ -89,7 +90,7 @@ namespace efVideoTube.Controllers {
                     }
 
                     if (!subContent.IsNullOrEmpty())
-                        return File(Encoding.UTF8.GetBytes(subContent), "text/vtt");
+                        return File(Encoding.UTF8.GetBytes(subContent), "text/vtt", Path.GetFileName(path));
                 }
             }
             return null;
@@ -108,7 +109,8 @@ namespace efVideoTube.Controllers {
         }
 
         private string GetPathForUrl(string physicalPath, string category) {
-            return Path.Combine(category, physicalPath.Substring(Global.CategoryPathMaps[category].Length));
+            return "{1}{0}{2}".FormatWith(Path.DirectorySeparatorChar, category,
+                physicalPath.Substring(Global.CategoryPathMaps[category].Length).Trim(Path.DirectorySeparatorChar));
         }
     }
 }

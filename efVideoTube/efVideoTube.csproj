@@ -104,6 +104,10 @@
       <Project>{9e76cd70-44a5-419f-a6f3-1106b0516a66}</Project>
       <Name>SrtLib</Name>
     </ProjectReference>
+    <ProjectReference Include="..\VikingErik.Mvc.ResumingActionResults\VikingErik.Mvc.ResumingActionResults.csproj">
+      <Project>{2f14af73-df95-4205-8fb8-2b3e6e0dc3f9}</Project>
+      <Name>VikingErik.Mvc.ResumingActionResults</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
