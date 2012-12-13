@@ -25,7 +25,7 @@ namespace efVideoTube.Models {
                 if (fileNameWithoutExt.EndsWith(extLang.Key, StringComparison.OrdinalIgnoreCase))
                     return extLang.Value;
             }
-            return null;
+            return defaultLanguage;
         }
     }
 }

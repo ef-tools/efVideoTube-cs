@@ -1,14 +1,25 @@
 ﻿@using efVideoTube.Models;
 @model VideoModel
 @{
-    ViewBag.Title = "Player";
+    Layout = null;
 }
 
-<h2>Player</h2>
+<!DOCTYPE html>
 
-<video controls src="@Url.Action("Video", new { path = Model.Video })">
-@foreach (var subLang in Model.SubtitleLanguages) {
-    <track kind="captions" src="@Url.Action("Subtitle", new { path = subLang.Key })" srclang="@subLang.Value" label="@subLang.Value" />
-}
-</video>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@Model.Video</title>
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div>
+        <video controls autoplay preload="none" src="@Url.Action("Video", new { path = Model.Video })">
+        @foreach (var subLang in Model.SubtitleLanguages) {
+            <track kind="captions" src="@Url.Action("Subtitle", new { path = subLang.Key })" srclang="@subLang.Value" label="@subLang.Value" />
+        }
+        </video>
+    </div>
+</body>
+</html>
 
