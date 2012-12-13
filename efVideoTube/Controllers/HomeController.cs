@@ -66,7 +66,7 @@ namespace efVideoTube.Controllers {
                 GetPhysicalPathAndCategory(path, out physicalPath, out category);
 
                 if (!physicalPath.IsNullOrEmpty() && IOFile.Exists(physicalPath))
-                    return new ResumingFilePathResult(physicalPath, "video/mp4", Path.GetFileName(physicalPath));
+                    return new ResumingFilePathResult(physicalPath, "video/mp4");
             }
             return null;
         }

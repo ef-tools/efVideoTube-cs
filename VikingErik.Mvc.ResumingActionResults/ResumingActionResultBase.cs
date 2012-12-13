@@ -177,11 +177,10 @@ namespace VikingErik.Mvc.ResumingActionResults
                 HttpWorkerRequest.GetKnownResponseHeaderName(HttpWorkerRequest.HeaderAcceptRanges),
                 "bytes");
 
-            string fileName = FileName ?? resumingRequest.FileName;
-            if (!string.IsNullOrEmpty(fileName))
+            if (!string.IsNullOrEmpty(FileName))
             {
                 context.HttpContext.Response.AddHeader(
-                    "Content-Disposition", string.Format("inline; filename=\"{0}\"", fileName));
+                    "Content-Disposition", string.Format("inline; filename=\"{0}\"", FileName));
             }
 
             if (!string.IsNullOrEmpty(this.EntityTag))
