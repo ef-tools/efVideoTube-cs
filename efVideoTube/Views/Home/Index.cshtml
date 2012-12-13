@@ -1,0 +1,32 @@
+﻿@using Path = System.IO.Path;
+@using efVideoTube.Models;
+@using PureLib.Common;
+@model ListModel
+@{
+    ViewBag.Title = "Video List";
+}
+
+<h2>Video List</h2>
+
+@if (!Model.Current.IsNullOrEmpty()) {
+    <p>
+        @Html.ActionLink("Back", "Index", new { path = Path.GetDirectoryName(Model.Current) })
+        Location: @Model.Current
+    </p>
+}
+
+<table>
+    @foreach (string f in Model.Folders) {
+        <tr>
+            <td>@Html.ActionLink(Path.GetFileName(f), "Index", new { path = f })</td>
+        </tr>
+    }
+</table>
+<table>
+    @foreach (string f in Model.Files) {
+        <tr>
+            <td>@Html.ActionLink(Path.GetFileName(f), "Player", new { path = f })</td>
+        </tr>
+    }
+</table>
+

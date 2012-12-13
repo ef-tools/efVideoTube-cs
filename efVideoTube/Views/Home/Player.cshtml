@@ -1,0 +1,14 @@
+﻿@using efVideoTube.Models;
+@model VideoModel
+@{
+    ViewBag.Title = "Player";
+}
+
+<h2>Player</h2>
+
+<video controls src="@Url.Action("Video", new { path = Model.Video })">
+@foreach (var subLang in Model.SubtitleLanguages) {
+    <track kind="captions" src="@Url.Action("Subtitle", new { path = subLang.Key })" srclang="@subLang.Value" label="@subLang.Value" />
+}
+</video>
+
