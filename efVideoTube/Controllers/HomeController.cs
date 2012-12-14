@@ -32,7 +32,7 @@ namespace efVideoTube.Controllers {
                         Current = path,
                         Folders = dir.GetDirectories().Where(d => !d.Attributes.HasFlag(FileAttributes.Hidden))
                             .Select(d => GetPathForUrl(d.FullName, category)).ToArray(),
-                        Files = dir.GetFiles(Global.VideoFilter).Where(d => !d.Attributes.HasFlag(FileAttributes.Hidden))
+                        Files = dir.GetFiles().Where(f => Global.SupportedVideoTypes.ContainsKey(Path.GetExtension(f.FullName)) && !f.Attributes.HasFlag(FileAttributes.Hidden))
                             .Select(f => GetPathForUrl(f.FullName, category)).ToArray()
                     });
             }
@@ -49,7 +49,8 @@ namespace efVideoTube.Controllers {
                 if (!physicalPath.IsNullOrEmpty()) {
                     string[] subs = Directory.GetFiles(Path.GetDirectoryName(physicalPath), "{0}.*".FormatWith(Path.GetFileNameWithoutExtension(physicalPath)))
                         .Where(s => Global.SupportedSubTypes.Contains(Path.GetExtension(s)))
-                        .Select(s => Path.ChangeExtension(GetPathForUrl(s, category), Global.VttExt)).Distinct().ToArray();
+                        .Select(s => Path.ChangeExtension(GetPathForUrl(s, category), Global.VttExt))
+                        .Distinct().ToArray();
                     return View(new VideoModel {
                         Video = GetPathForUrl(physicalPath, category),
                         SubtitleLanguages = subs.ToDictionary(s => s, s => SubtitleLanguageParser.Parse(s))
@@ -66,7 +67,8 @@ namespace efVideoTube.Controllers {
                 GetPhysicalPathAndCategory(path, out physicalPath, out category);
 
                 if (!physicalPath.IsNullOrEmpty() && IOFile.Exists(physicalPath))
-                    return new ResumingFilePathResult(physicalPath, "video/mp4");
+                    return new ResumingFilePathResult(physicalPath, 
+                        Global.SupportedVideoTypes[Path.GetExtension(physicalPath)]);
             }
             return null;
         }
