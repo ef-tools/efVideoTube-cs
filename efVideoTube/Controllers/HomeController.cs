@@ -32,7 +32,7 @@ namespace efVideoTube.Controllers {
                         Current = path,
                         Folders = dir.GetDirectories().Where(d => !d.Attributes.HasFlag(FileAttributes.Hidden))
                             .Select(d => GetPathForUrl(d.FullName, category)).ToArray(),
-                        Files = dir.GetFiles().Where(f => Global.SupportedVideoTypes.ContainsKey(Path.GetExtension(f.FullName)) && !f.Attributes.HasFlag(FileAttributes.Hidden))
+                        Files = dir.GetFiles().Where(f => Global.SupportedMediaTypes.ContainsKey(Path.GetExtension(f.FullName)) && !f.Attributes.HasFlag(FileAttributes.Hidden))
                             .Select(f => GetPathForUrl(f.FullName, category)).ToArray()
                     });
             }
@@ -48,7 +48,7 @@ namespace efVideoTube.Controllers {
 
                 if (!physicalPath.IsNullOrEmpty()) {
                     string[] subs = Directory.GetFiles(Path.GetDirectoryName(physicalPath), "{0}.*".FormatWith(Path.GetFileNameWithoutExtension(physicalPath)))
-                        .Where(s => Global.SupportedSubTypes.Contains(Path.GetExtension(s)))
+                        .Where(s => Global.SupportedSubtitleTypes.Contains(Path.GetExtension(s)))
                         .Select(s => Path.ChangeExtension(GetPathForUrl(s, category), Global.VttExt))
                         .Distinct().ToArray();
                     return View(new VideoModel {
@@ -60,15 +60,15 @@ namespace efVideoTube.Controllers {
             return null;
         }
 
-        public ResumingFilePathResult Video(string path) {
+        public ResumingFilePathResult Media(string path) {
             if (!path.IsNullOrEmpty()) {
                 string physicalPath;
                 string category;
                 GetPhysicalPathAndCategory(path, out physicalPath, out category);
 
-                if (!physicalPath.IsNullOrEmpty() && IOFile.Exists(physicalPath))
+                if (!physicalPath.IsNullOrEmpty() && IOFile.Exists(physicalPath) && Global.SupportedMediaTypes.ContainsKey(Path.GetExtension(physicalPath)))
                     return new ResumingFilePathResult(physicalPath, 
-                        Global.SupportedVideoTypes[Path.GetExtension(physicalPath)]);
+                        Global.SupportedMediaTypes[Path.GetExtension(physicalPath)]);
             }
             return null;
         }
@@ -84,8 +84,8 @@ namespace efVideoTube.Controllers {
                     if (IOFile.Exists(physicalPath))
                         subContent = physicalPath.ReadText(Encoding.UTF8);
                     else {
-                        for (int i = 0; i < Global.SupportedSubTypes.Length; i++) {
-                            physicalPath = Path.ChangeExtension(physicalPath, Global.SupportedSubTypes[i]);
+                        for (int i = 0; i < Global.SupportedSubtitleTypes.Length; i++) {
+                            physicalPath = Path.ChangeExtension(physicalPath, Global.SupportedSubtitleTypes[i]);
                             if (IOFile.Exists(physicalPath))
                                 subContent = physicalPath.ReadSubtitle().ToVtt();
                         }

@@ -17,9 +17,9 @@
 </head>
 <body>
     <div>
-        <video controls autoplay src="@Url.Action("Video", new { path = Model.Video })">
+        <video controls autoplay src="@Url.Action(Global.ActionName.Media, Model.Video.GetRouteValues())">
         @foreach (var subLang in Model.SubtitleLanguages) {
-            <track kind="subtitles" src="@Url.Action("Subtitle", new { path = subLang.Key })"
+            <track kind="subtitles" src="@Url.Action(Global.ActionName.Subtitle, subLang.Key.GetRouteValues())"
                 srclang="@subLang.Value" label="@subLang.Value" @(subLang.Value == defaultLang ? "default" : string.Empty) />
         }
         </video>

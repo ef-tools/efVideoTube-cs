@@ -2,14 +2,14 @@
 @using PureLib.Common;
 @model ListModel
 @{
-    ViewBag.Title = "Video List";
+    ViewBag.Title = "List";
 }
 
-<h2>Video List</h2>
+<h2>List</h2>
 
 @if (!Model.Current.IsNullOrEmpty()) {
     <p>
-        @Html.ActionLink("Back", "Index", new { path = Path.GetDirectoryName(Model.Current) })
+        @Html.ActionLink("Back", Global.ActionName.Index, Path.GetDirectoryName(Model.Current).GetRouteValues())
         Location: @Model.Current
     </p>
 }
@@ -17,14 +17,15 @@
 <table>
     @foreach (string f in Model.Folders) {
         <tr>
-            <td>@Html.ActionLink(Path.GetFileName(f), "Index", new { path = f })</td>
+            <td>@Html.ActionLink(Path.GetFileName(f), Global.ActionName.Index, f.GetRouteValues())</td>
         </tr>
     }
 </table>
+<br />
 <table>
     @foreach (string f in Model.Files) {
         <tr>
-            <td>@Html.ActionLink(Path.GetFileName(f), "Player", new { path = f })</td>
+            <td>@Html.ActionLink(Path.GetFileName(f), f.IsVideo() ? Global.ActionName.Player : Global.ActionName.Media, f.GetRouteValues())</td>
         </tr>
     }
 </table>
