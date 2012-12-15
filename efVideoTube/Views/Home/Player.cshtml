@@ -2,10 +2,13 @@
 @model VideoModel
 @{
     Layout = null;
+    string defaultLang = SubtitleLanguageParser.DefaultLanguage;
+    if (Model.SubtitleLanguages.Count == 1) {
+        defaultLang = Model.SubtitleLanguages.Single().Value;
+    }
 }
 
 <!DOCTYPE html>
-
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
@@ -16,7 +19,8 @@
     <div>
         <video controls autoplay src="@Url.Action("Video", new { path = Model.Video })">
         @foreach (var subLang in Model.SubtitleLanguages) {
-            <track kind="subtitles" src="@Url.Action("Subtitle", new { path = subLang.Key })" srclang="@subLang.Value" label="@subLang.Value" @(subLang.Value == SubtitleLanguageParser.DefaultLanguage ? "default" : string.Empty) />
+            <track kind="subtitles" src="@Url.Action("Subtitle", new { path = subLang.Key })"
+                srclang="@subLang.Value" label="@subLang.Value" @(subLang.Value == defaultLang ? "default" : string.Empty) />
         }
         </video>
     </div>
