@@ -38,7 +38,7 @@ namespace efVideoTube.Models {
 
         public static string GetMediaUrl(this HttpRequestBase request, string path) {
             return new Uri(new Uri("{0}://{1}{2}/".FormatWith(request.Url.Scheme,
-                request.Url.Authority, request.ApplicationPath)), path).AbsolutePath;
+                request.Url.Authority, request.ApplicationPath.TrimEnd('/'))), path).AbsolutePath;
         }
 
         public static class ActionName {
