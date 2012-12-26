@@ -8,7 +8,6 @@ using System.Web.Mvc;
 using efVideoTube.Models;
 using PureLib.Common;
 using SrtLib;
-using VikingErik.Mvc.ResumingActionResults;
 using IOFile = System.IO.File;
 
 namespace efVideoTube.Controllers {
@@ -52,23 +51,10 @@ namespace efVideoTube.Controllers {
                         .Select(s => Path.ChangeExtension(GetPathForUrl(s, category), Global.VttExt))
                         .Distinct().ToArray();
                     return View(new VideoModel {
-                        Video = GetPathForUrl(physicalPath, category),
+                        Video = Request.GetMediaUrl(path),
                         SubtitleLanguages = subs.ToDictionary(s => s, s => SubtitleLanguageParser.Parse(s))
                     });
                 }
-            }
-            return null;
-        }
-
-        public ResumingFilePathResult Media(string path) {
-            if (!path.IsNullOrEmpty()) {
-                string physicalPath;
-                string category;
-                GetPhysicalPathAndCategory(path, out physicalPath, out category);
-
-                if (!physicalPath.IsNullOrEmpty() && IOFile.Exists(physicalPath) && Global.SupportedMediaTypes.ContainsKey(Path.GetExtension(physicalPath)))
-                    return new ResumingFilePathResult(physicalPath, 
-                        Global.SupportedMediaTypes[Path.GetExtension(physicalPath)]);
             }
             return null;
         }

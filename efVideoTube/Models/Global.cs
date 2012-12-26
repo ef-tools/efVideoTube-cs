@@ -33,13 +33,17 @@ namespace efVideoTube.Models {
         }
 
         public static object GetRouteValues(this string path) {
-            return new { id = Path.GetFileName(path), path = path };
+            return new { path = path };
+        }
+
+        public static string GetMediaUrl(this HttpRequestBase request, string path) {
+            return new Uri(new Uri("{0}://{1}{2}/".FormatWith(request.Url.Scheme,
+                request.Url.Authority, request.ApplicationPath)), path).AbsolutePath;
         }
 
         public static class ActionName {
             public const string Index = "Index";
             public const string Player = "Player";
-            public const string Media = "Media";
             public const string Subtitle = "Subtitle";
         }
     }

@@ -25,7 +25,14 @@
 <table>
     @foreach (string f in Model.Files) {
         <tr>
-            <td>@Html.ActionLink(Path.GetFileName(f), f.IsVideo() ? Global.ActionName.Player : Global.ActionName.Media, f.GetRouteValues())</td>
+            <td>
+                @if (f.IsVideo()) {
+                    @Html.ActionLink(Path.GetFileName(f), Global.ActionName.Player, f.GetRouteValues())
+                }
+                else{
+                    <a href="@Request.GetMediaUrl(f)">@Path.GetFileName(f)</a>
+                }
+            </td>
         </tr>
     }
 </table>
