@@ -2,7 +2,7 @@
 @using PureLib.Common;
 @model ListModel
 @{
-    ViewBag.Title = Path.GetFileName(@Model.Current);
+    ViewBag.Title = Model.Current.IsNullOrEmpty() ? "List" : Path.GetFileName(Model.Current);
 }
 
 <h2>List</h2>
