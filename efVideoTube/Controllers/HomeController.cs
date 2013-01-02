@@ -31,7 +31,7 @@ namespace efVideoTube.Controllers {
                         Current = path,
                         Folders = dir.GetDirectories().Where(d => !d.Attributes.HasFlag(FileAttributes.Hidden))
                             .Select(d => GetPathForUrl(d.FullName, category)).ToArray(),
-                        Files = dir.GetFiles().Where(f => Global.SupportedMediaTypes.ContainsKey(Path.GetExtension(f.FullName)) && !f.Attributes.HasFlag(FileAttributes.Hidden))
+                        Files = dir.GetFiles().Where(f => Media.SupportedMedia.ContainsKey(Path.GetExtension(f.FullName)) && !f.Attributes.HasFlag(FileAttributes.Hidden))
                             .Select(f => GetPathForUrl(f.FullName, category)).ToArray()
                     });
             }
@@ -45,16 +45,18 @@ namespace efVideoTube.Controllers {
                 string category;
                 GetPhysicalPathAndCategory(path, out physicalPath, out category);
 
-                if (!physicalPath.IsNullOrEmpty()) {
-                    string[] subs = Directory.GetFiles(Path.GetDirectoryName(physicalPath), "{0}.*".FormatWith(Path.GetFileNameWithoutExtension(physicalPath)))
-                        .Where(s => Global.SupportedSubtitleTypes.Contains(Path.GetExtension(s)))
-                        .Select(s => Path.ChangeExtension(GetPathForUrl(s, category), Global.VttExt))
-                        .Distinct().ToArray();
-                    return View(new VideoModel {
-                        Video = Request.GetMediaUrl(path),
-                        SubtitleLanguages = subs.ToDictionary(s => s, s => SubtitleLanguageParser.Parse(s))
-                    });
-                }
+                if (!physicalPath.IsNullOrEmpty())
+                    switch (physicalPath.GetVideoPlayer()) {
+                        case VideoPlayer.Html5:
+                            string[] subs = Directory.GetFiles(Path.GetDirectoryName(physicalPath), "{0}.*".FormatWith(Path.GetFileNameWithoutExtension(physicalPath)))
+                                .Where(s => Global.SupportedSubtitleTypes.Contains(Path.GetExtension(s)))
+                                .Select(s => Path.ChangeExtension(GetPathForUrl(s, category), Global.VttExt))
+                                .Distinct().ToArray();
+                            return View("Html5Player", new Html5VideoModel {
+                                Video = Request.GetMediaUrl(path),
+                                SubtitleLanguages = subs.ToDictionary(s => s, s => SubtitleLanguageParser.Parse(s))
+                            });
+                    }
             }
             return null;
         }

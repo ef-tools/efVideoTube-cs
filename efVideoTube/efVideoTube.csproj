@@ -73,9 +73,11 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Global.cs" />
+    <Compile Include="Models\Html5VideoModel.cs" />
     <Compile Include="Models\ListModel.cs" />
     <Compile Include="Models\SubtitleLanguageParser.cs" />
-    <Compile Include="Models\VideoModel.cs" />
+    <Compile Include="Models\Media.cs" />
+    <Compile Include="Models\VideoPlayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -100,9 +102,6 @@
     <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Home\Player.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\mp4tools\SrtLib\SrtLib.csproj">
       <Project>{9e76cd70-44a5-419f-a6f3-1106b0516a66}</Project>
       <Name>SrtLib</Name>
@@ -110,6 +109,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\PublishProfiles\Disk.pubxml" />
+    <Content Include="Views\Home\Html5Player.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

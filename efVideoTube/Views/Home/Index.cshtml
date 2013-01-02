@@ -26,10 +26,10 @@
     @foreach (string f in Model.Files) {
         <tr>
             <td>
-                @if (f.IsVideo()) {
+                @if (f.GetVideoPlayer().HasValue) {
                     @Html.ActionLink(Path.GetFileName(f), Global.ActionName.Player, f.GetRouteValues())
                 }
-                else{
+                else {
                     <a href="@Request.GetMediaUrl(f)">@Path.GetFileName(f)</a>
                 }
             </td>
