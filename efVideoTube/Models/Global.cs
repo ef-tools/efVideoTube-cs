@@ -9,11 +9,11 @@ using PureLib.Common;
 namespace efVideoTube.Models {
     public static class Global {
         public const string VttExt = ".vtt";
-        public static string[] SupportedSubtitleTypes { get; private set; }
+        public static string[] SupportedSubtitles { get; private set; }
         public static Dictionary<string, string> CategoryPathMaps { get; private set; }
 
         static Global() {
-            SupportedSubtitleTypes = new string[] { ".srt", ".ass", ".ssa" };
+            SupportedSubtitles = new string[] { ".srt", ".ass", ".ssa" };
 
             CategoryPathMaps = new Dictionary<string, string>();
             foreach (string pair in ConfigurationManager.AppSettings["categories"].Split('|')) {
@@ -31,8 +31,12 @@ namespace efVideoTube.Models {
                 request.Url.Authority, request.ApplicationPath.TrimEnd('/'))), path).LocalPath;
         }
 
-        public static VideoPlayer? GetVideoPlayer(this string path) {
-            return Media.SupportedMedia[Path.GetExtension(path)].Player;
+        public static VideoPlayer GetVideoPlayer(this string path) {
+            string ext = Path.GetExtension(path);
+            if (Media.SupportedMedia.ContainsKey(ext))
+                return Media.SupportedMedia[Path.GetExtension(path)].Player;
+            else
+                return VideoPlayer.None;
         }
 
         public static class ActionName {

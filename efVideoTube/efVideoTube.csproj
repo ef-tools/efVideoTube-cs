@@ -77,10 +77,12 @@
     <Compile Include="Models\ListModel.cs" />
     <Compile Include="Models\SubtitleLanguageParser.cs" />
     <Compile Include="Models\Media.cs" />
+    <Compile Include="Models\VideoModel.cs" />
     <Compile Include="Models\VideoPlayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\MediaPlayerTemplate.xap" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\jquery.efvt.js" />
@@ -110,6 +112,8 @@
   <ItemGroup>
     <None Include="Properties\PublishProfiles\Disk.pubxml" />
     <Content Include="Views\Home\Html5Player.cshtml" />
+    <Content Include="Views\Home\SilverlightPlayer.cshtml" />
+    <Content Include="Views\Home\FlashPlayer.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -46,15 +46,26 @@ namespace efVideoTube.Controllers {
                 GetPhysicalPathAndCategory(path, out physicalPath, out category);
 
                 if (!physicalPath.IsNullOrEmpty())
-                    switch (physicalPath.GetVideoPlayer()) {
+                    switch (path.GetVideoPlayer()) {
                         case VideoPlayer.Html5:
                             string[] subs = Directory.GetFiles(Path.GetDirectoryName(physicalPath), "{0}.*".FormatWith(Path.GetFileNameWithoutExtension(physicalPath)))
-                                .Where(s => Global.SupportedSubtitleTypes.Contains(Path.GetExtension(s)))
+                                .Where(s => Global.SupportedSubtitles.Contains(Path.GetExtension(s)))
                                 .Select(s => Path.ChangeExtension(GetPathForUrl(s, category), Global.VttExt))
                                 .Distinct().ToArray();
                             return View("Html5Player", new Html5VideoModel {
-                                Video = Request.GetMediaUrl(path),
+                                Title = Path.GetFileName(path),
+                                Url = Request.GetMediaUrl(path),
                                 SubtitleLanguages = subs.ToDictionary(s => s, s => SubtitleLanguageParser.Parse(s))
+                            });
+                        case VideoPlayer.Flash:
+                            return View("FlashPlayer", new VideoModel {
+                                Title = Path.GetFileName(path),
+                                Url = Request.GetMediaUrl(path),
+                            });
+                        case VideoPlayer.Silverlight:
+                            return View("SilverlightPlayer", new VideoModel {
+                                Title = Path.GetFileName(path),
+                                Url = Request.GetMediaUrl(path),
                             });
                     }
             }
@@ -72,8 +83,8 @@ namespace efVideoTube.Controllers {
                     if (IOFile.Exists(physicalPath))
                         subContent = physicalPath.ReadText(Encoding.UTF8);
                     else {
-                        for (int i = 0; i < Global.SupportedSubtitleTypes.Length; i++) {
-                            physicalPath = Path.ChangeExtension(physicalPath, Global.SupportedSubtitleTypes[i]);
+                        for (int i = 0; i < Global.SupportedSubtitles.Length; i++) {
+                            physicalPath = Path.ChangeExtension(physicalPath, Global.SupportedSubtitles[i]);
                             if (IOFile.Exists(physicalPath))
                                 subContent = physicalPath.ReadSubtitle().ToVtt();
                         }
