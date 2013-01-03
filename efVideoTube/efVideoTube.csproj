@@ -82,10 +82,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\SilverlightPlayer.css" />
+    <Content Include="Content\flowplayer-3.2.15.swf" />
+    <Content Include="Content\flowplayer.controls-3.2.14.swf" />
+    <Content Include="Content\Player.css" />
     <Content Include="Content\MediaPlayerTemplate.xap" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Scripts\flowplayer-3.2.11.min.js" />
     <Content Include="Scripts\SilverlightPlayer.js" />
     <Content Include="Scripts\jquery.efvt.js" />
     <Content Include="Web.config">
