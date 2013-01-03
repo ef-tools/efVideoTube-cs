@@ -5,21 +5,24 @@
 body {
     padding: 0;
     margin: 0;
+    background-color: black;
+}
+video {
+    height: 100%;
+    width: 100%;
+    margin: 0 auto;
 }
 .fadeSome {
     opacity:0.30;
     filter:alpha(opacity=30);
-    -moz-opacity: 30%;        
 }
 .fadeLots {
     opacity:0.50;
     filter:alpha(opacity=50);
-    -moz-opacity: 0.5;        
 }  
 .fadeCompletely {
     opacity:0.0;
     filter:alpha(opacity=0);
-    -moz-opacity: 0.0;
 }     
 #silverlightControlHost {
     height: 100%;
