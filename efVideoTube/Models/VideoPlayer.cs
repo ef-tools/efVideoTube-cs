@@ -7,7 +7,7 @@ namespace efVideoTube.Models {
     public enum VideoPlayer {
         None,
         Html5,
-        Flash,
         Silverlight,
+        Flash,
     }
 }

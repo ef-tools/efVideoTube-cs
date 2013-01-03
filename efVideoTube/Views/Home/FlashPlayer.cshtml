@@ -1,28 +1,23 @@
 ﻿@using efVideoTube.Models;
-@model Html5VideoModel
+@model VideoModel
 @{
     Layout = null;
-    string defaultLang = SubtitleLanguageParser.DefaultLanguage;
-    if (Model.SubtitleLanguages.Count == 1) {
-        defaultLang = Model.SubtitleLanguages.Single().Value;
-    }
 }
 
 <!DOCTYPE html>
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>@Path.GetFileName(Model.Url)</title>
-    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+    <title>@Model.Title</title>
+    <script src="@Url.Content(string.Format("{0}://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js", Request.IsSecureConnection ? "https" : "http"))" type="text/javascript"></script>
+    <script src="http://releases.flowplayer.org/5.2.1/flowplayer.min.js" type="text/javascript"></script>
+    <link href="http://releases.flowplayer.org/5.2.1/skin/minimalist.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
-    <div>
-        <video controls autoplay src="@Model.Url">
-        @foreach (var subLang in Model.SubtitleLanguages) {
-            <track kind="subtitles" src="@Url.Action(Global.ActionName.Subtitle, subLang.Key.GetRouteValues())"
-                srclang="@subLang.Value" label="@subLang.Value" @(subLang.Value == defaultLang ? "default" : string.Empty) />
-        }
-        </video>
+    <div class="flowplayer" data-swf="@Url.Content("~/Content/flowplayer.swf")" data-engine="flash">
+       <video autoplay>
+           <source type="video/flash" src="@Model.Url" />
+       </video>
     </div>
 </body>
 </html>

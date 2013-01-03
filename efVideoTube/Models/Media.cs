@@ -17,8 +17,9 @@ namespace efVideoTube.Models {
             Media[] media = new Media[] {
                 new Media(".mp4",  "video/mp4",      VideoPlayer.Html5),
                 new Media(".webm", "video/webm",     VideoPlayer.Html5),
-                new Media(".flv",  "video/x-flv",    VideoPlayer.Flash),
                 new Media(".wmv",  "video/x-ms-wmv", VideoPlayer.Silverlight),
+                new Media(".avi", "video/x-msvideo", VideoPlayer.Silverlight),
+                new Media(".flv",  "video/x-flv",    VideoPlayer.Flash),
                 new Media(".m4a",  "audio/mp4",      VideoPlayer.None),
             };
             SupportedMedia = media.ToDictionary(m => m.Extension, m => m, StringComparer.OrdinalIgnoreCase);

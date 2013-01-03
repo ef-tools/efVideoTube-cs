@@ -82,9 +82,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\SilverlightPlayer.css" />
     <Content Include="Content\MediaPlayerTemplate.xap" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Scripts\SilverlightPlayer.js" />
     <Content Include="Scripts\jquery.efvt.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
