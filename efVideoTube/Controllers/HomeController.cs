@@ -53,18 +53,18 @@ namespace efVideoTube.Controllers {
                                 .Select(s => Path.ChangeExtension(GetPathForUrl(s, category), Global.VttExt))
                                 .Distinct().ToArray();
                             return View("Html5Player", new Html5VideoModel {
-                                Title = Path.GetFileName(path),
+                                Title = Path.GetFileNameWithoutExtension(path),
                                 Url = Request.GetMediaUrl(path),
                                 SubtitleLanguages = subs.ToDictionary(s => s, s => SubtitleLanguageParser.Parse(s))
                             });
                         case VideoPlayer.Silverlight:
                             return View("SilverlightPlayer", new VideoModel {
-                                Title = Path.GetFileName(path),
+                                Title = Path.GetFileNameWithoutExtension(path),
                                 Url = Request.GetMediaUrl(path),
                             });
                         case VideoPlayer.Flash:
                             return View("FlashPlayer", new VideoModel {
-                                Title = Path.GetFileName(path),
+                                Title = Path.GetFileNameWithoutExtension(path),
                                 Url = Request.GetMediaUrl(path),
                             });
                     }

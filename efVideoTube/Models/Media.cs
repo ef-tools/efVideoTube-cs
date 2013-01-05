@@ -16,21 +16,23 @@ namespace efVideoTube.Models {
 
         static Media() {
             Media[] media = new Media[] {
-                new Media(".mp4",  "video/mp4",      VideoPlayer.Html5,
-                    new VideoPlayer[] { VideoPlayer.Html5, VideoPlayer.Silverlight, VideoPlayer.Flash }),
+                new Media(".mp4",  "video/mp4",      VideoPlayer.Html5,       VideoPlayer.Silverlight | VideoPlayer.Flash),
                 new Media(".webm", "video/webm",     VideoPlayer.Html5),
                 new Media(".wmv",  "video/x-ms-wmv", VideoPlayer.Silverlight),
                 new Media(".flv",  "video/x-flv",    VideoPlayer.Flash),
-                new Media(".m4a",  "audio/mp4",      VideoPlayer.None),
+                new Media(".m4a",  "audio/mp4",      VideoPlayer.Silverlight),
             };
             SupportedMedia = media.ToDictionary(m => m.Extension, m => m, StringComparer.OrdinalIgnoreCase);
         }
 
-        public Media(string extension, string mime, VideoPlayer player, VideoPlayer[] availablePlayers = null) {
+        public Media(string extension, string mime, VideoPlayer player, VideoPlayer optionalPlayers = VideoPlayer.None) {
             Extension = extension;
             MIME = mime;
             Player = player;
-            AvailablePlayers = availablePlayers;
+
+            VideoPlayer availablePlayers = (player | optionalPlayers);
+            AvailablePlayers = ((VideoPlayer[])Enum.GetValues(typeof(VideoPlayer)))
+                .Where(p => (p != VideoPlayer.None) && availablePlayers.HasFlag(p)).ToArray();
         }
     }
 }
