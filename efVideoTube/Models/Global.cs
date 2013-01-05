@@ -37,7 +37,7 @@ namespace efVideoTube.Models {
             string ext = Path.GetExtension(path);
             HttpCookie cookie = request.Cookies[ext];
             VideoPlayer player;
-            if (!Enum.TryParse(cookie.Value, out player)) {
+            if ((cookie == null) || !Enum.TryParse(cookie.Value, out player)) {
                 if (Media.SupportedMedia.ContainsKey(ext))
                     player = Media.SupportedMedia[ext].Player;
                 else
