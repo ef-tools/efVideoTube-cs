@@ -26,7 +26,7 @@
     @foreach (string f in Model.Files) {
         <tr>
             <td>
-                @if (f.GetVideoPlayer() != VideoPlayer.None) {
+                @if (Request.GetVideoPlayer(f) != VideoPlayer.None) {
                     @Html.ActionLink(Path.GetFileName(f), Global.ActionName.Player, f.GetRouteValues())
                 }
                 else {

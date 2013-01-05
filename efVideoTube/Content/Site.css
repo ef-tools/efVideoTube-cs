@@ -32,7 +32,6 @@ a:active {
 }
 
 p, ul {
-    margin-bottom: 20px;
     line-height: 1.6em;
 }
 
@@ -178,7 +177,6 @@ ul#menu li.selected a {
 
 fieldset {
     border: 1px solid #ddd;
-    padding: 0 1.4em 1.4em 1.4em;
     margin: 0 0 1.5em 0;
 }
 

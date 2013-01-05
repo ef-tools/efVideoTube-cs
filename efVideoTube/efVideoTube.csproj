@@ -88,6 +88,7 @@
     <Content Include="Content\MediaPlayerTemplate.xap" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Scripts\jquery.efvt.settings.js" />
     <Content Include="Scripts\flowplayer-3.2.11.min.js" />
     <Content Include="Scripts\SilverlightPlayer.js" />
     <Content Include="Scripts\jquery.efvt.js" />
@@ -119,6 +120,7 @@
     <Content Include="Views\Home\Html5Player.cshtml" />
     <Content Include="Views\Home\SilverlightPlayer.cshtml" />
     <Content Include="Views\Home\FlashPlayer.cshtml" />
+    <Content Include="Views\Home\Settings.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

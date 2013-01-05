@@ -46,7 +46,7 @@ namespace efVideoTube.Controllers {
                 GetPhysicalPathAndCategory(path, out physicalPath, out category);
 
                 if (!physicalPath.IsNullOrEmpty())
-                    switch (path.GetVideoPlayer()) {
+                    switch (Request.GetVideoPlayer(path)) {
                         case VideoPlayer.Html5:
                             string[] subs = Directory.GetFiles(Path.GetDirectoryName(physicalPath), "{0}.*".FormatWith(Path.GetFileNameWithoutExtension(physicalPath)))
                                 .Where(s => Global.SupportedSubtitles.Contains(Path.GetExtension(s)))
@@ -57,13 +57,13 @@ namespace efVideoTube.Controllers {
                                 Url = Request.GetMediaUrl(path),
                                 SubtitleLanguages = subs.ToDictionary(s => s, s => SubtitleLanguageParser.Parse(s))
                             });
-                        case VideoPlayer.Flash:
-                            return View("FlashPlayer", new VideoModel {
+                        case VideoPlayer.Silverlight:
+                            return View("SilverlightPlayer", new VideoModel {
                                 Title = Path.GetFileName(path),
                                 Url = Request.GetMediaUrl(path),
                             });
-                        case VideoPlayer.Silverlight:
-                            return View("SilverlightPlayer", new VideoModel {
+                        case VideoPlayer.Flash:
+                            return View("FlashPlayer", new VideoModel {
                                 Title = Path.GetFileName(path),
                                 Url = Request.GetMediaUrl(path),
                             });
@@ -95,6 +95,10 @@ namespace efVideoTube.Controllers {
                 }
             }
             return null;
+        }
+
+        public ViewResult Settings() {
+            return View();
         }
 
         private void GetPhysicalPathAndCategory(string path, out string physicalPath, out string category) {

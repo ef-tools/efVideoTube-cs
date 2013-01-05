@@ -13,7 +13,7 @@ using PureLib.Common;
 namespace efVideoTube.Controllers {
     public class GateController : Controller {
         public ActionResult Login(string returnUrl) {
-            if (Request.ClientCertificate.Authenticate(ConfigurationManager.AppSettings["issuer"]))
+            if (Request.CertAuth(ConfigurationManager.AppSettings["issuer"]))
                 return returnUrl.IsNullOrEmpty() ? RedirectToAction("Index", "Home") : Redirect(returnUrl) as ActionResult;
             else
                 return new HttpStatusCodeResult((int)HttpStatusCode.Unauthorized);
