@@ -8,6 +8,7 @@ using PureLib.Common;
 namespace efVideoTube.Models {
     public class Media {
         public static Dictionary<string, Media> SupportedMedia { get; private set; }
+        public static VideoPlayer[] Players { get; private set; }
         
         public string Extension { get; private set; }
         public string MIME { get; private set; }
@@ -23,6 +24,7 @@ namespace efVideoTube.Models {
                 new Media(".m4a",  "audio/mp4",      VideoPlayer.Silverlight),
             };
             SupportedMedia = media.ToDictionary(m => m.Extension, m => m, StringComparer.OrdinalIgnoreCase);
+            Players = (VideoPlayer[])Enum.GetValues(typeof(VideoPlayer));
         }
 
         public Media(string extension, string mime, VideoPlayer player, VideoPlayer optionalPlayers = VideoPlayer.None) {
@@ -31,8 +33,7 @@ namespace efVideoTube.Models {
             Player = player;
 
             VideoPlayer availablePlayers = (player | optionalPlayers);
-            AvailablePlayers = ((VideoPlayer[])Enum.GetValues(typeof(VideoPlayer)))
-                .Where(p => (p != VideoPlayer.None) && availablePlayers.HasFlag(p)).ToArray();
+            AvailablePlayers = Players.Where(p => availablePlayers.HasFlag(p)).ToArray();
         }
     }
 }
