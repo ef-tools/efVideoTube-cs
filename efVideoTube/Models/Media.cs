@@ -16,6 +16,7 @@ namespace efVideoTube.Models {
         public VideoPlayer[] AvailablePlayers { get; private set; }
 
         static Media() {
+            Players = (VideoPlayer[])Enum.GetValues(typeof(VideoPlayer));
             Media[] media = new Media[] {
                 new Media(".mp4",  "video/mp4",      VideoPlayer.Html5,       VideoPlayer.Silverlight | VideoPlayer.Flash),
                 new Media(".webm", "video/webm",     VideoPlayer.Html5),
@@ -24,7 +25,6 @@ namespace efVideoTube.Models {
                 new Media(".m4a",  "audio/mp4",      VideoPlayer.Silverlight),
             };
             SupportedMedia = media.ToDictionary(m => m.Extension, m => m, StringComparer.OrdinalIgnoreCase);
-            Players = (VideoPlayer[])Enum.GetValues(typeof(VideoPlayer));
         }
 
         public Media(string extension, string mime, VideoPlayer player, VideoPlayer optionalPlayers = VideoPlayer.None) {

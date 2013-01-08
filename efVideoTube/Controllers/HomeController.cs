@@ -30,9 +30,9 @@ namespace efVideoTube.Controllers {
                     return View(new ListModel {
                         Current = path,
                         Folders = dir.GetDirectories().Where(d => !d.Attributes.HasFlag(FileAttributes.Hidden))
-                            .Select(d => GetPathForUrl(d.FullName, category)).ToArray(),
+                            .OrderBy(d => d.Name).Select(d => GetPathForUrl(d.FullName, category)).ToArray(),
                         Files = dir.GetFiles().Where(f => Media.SupportedMedia.ContainsKey(Path.GetExtension(f.FullName)) && !f.Attributes.HasFlag(FileAttributes.Hidden))
-                            .Select(f => GetPathForUrl(f.FullName, category)).ToArray()
+                            .OrderBy(f => f.Name).Select(f => GetPathForUrl(f.FullName, category)).ToArray()
                     });
             }
 
