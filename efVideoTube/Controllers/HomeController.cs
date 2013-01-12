@@ -17,7 +17,7 @@ namespace efVideoTube.Controllers {
             if (path.IsNullOrEmpty())
                 return View(new ListModel {
                     Folders = Global.CategoryPathMaps.Keys.ToArray(),
-                    Files = new string[0]
+                    Files = new FileModel[0]
                 });
 
             string physicalPath;
@@ -32,14 +32,14 @@ namespace efVideoTube.Controllers {
                         Folders = dir.GetDirectories().Where(d => !d.Attributes.HasFlag(FileAttributes.Hidden))
                             .OrderBy(d => d.Name).Select(d => GetPathForUrl(d.FullName, category)).ToArray(),
                         Files = dir.GetFiles().Where(f => Media.SupportedMedia.ContainsKey(Path.GetExtension(f.FullName)) && !f.Attributes.HasFlag(FileAttributes.Hidden))
-                            .OrderBy(f => f.Name).Select(f => GetPathForUrl(f.FullName, category)).ToArray()
+                            .OrderBy(f => f.Name).Select(f => new FileModel() { Path = GetPathForUrl(f.FullName, category), Size = f.Length }).ToArray()
                     });
             }
 
             return null;
         }
 
-        public ViewResult Player(string path) {
+        public ActionResult Player(string path) {
             if (!path.IsNullOrEmpty()) {
                 string physicalPath;
                 string category;
@@ -67,6 +67,8 @@ namespace efVideoTube.Controllers {
                                 Title = Path.GetFileNameWithoutExtension(path),
                                 Url = Request.GetMediaUrl(path),
                             });
+                        case VideoPlayer.None:
+                            return Redirect(Request.GetMediaUrl(path));
                     }
             }
             return null;

@@ -16,7 +16,7 @@
     <link href="@Url.Content("~/Content/Player.css")" rel="stylesheet" type="text/css" />
 </head>
 <body>
-    <div>
+    <div class="videoContainer">
         <video controls autoplay src="@Model.Url">
         @foreach (var subLang in Model.SubtitleLanguages) {
             <track kind="subtitles" src="@Url.Action(Global.ActionName.Subtitle, subLang.Key.GetRouteValues())"

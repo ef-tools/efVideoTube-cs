@@ -8,32 +8,26 @@
 <h2>List</h2>
 
 @if (!Model.Current.IsNullOrEmpty()) {
-    <p>
-        @Html.ActionLink("Back", Global.ActionName.Index, Path.GetDirectoryName(Model.Current).GetRouteValues())
-        Location: @Model.Current
-    </p>
+<p>
+    @Html.ActionLink("Back", Global.ActionName.Index, Path.GetDirectoryName(Model.Current).GetRouteValues())
+    Location: @Model.Current
+</p>
 }
 
 <table>
-    @foreach (string f in Model.Folders) {
-        <tr>
-            <td>@Html.ActionLink(Path.GetFileName(f), Global.ActionName.Index, f.GetRouteValues())</td>
-        </tr>
-    }
+@foreach (string f in Model.Folders) {
+    <tr>
+        <td>@Html.ActionLink(Path.GetFileName(f), Global.ActionName.Index, f.GetRouteValues())</td>
+    </tr>
+}
 </table>
 <br />
 <table>
-    @foreach (string f in Model.Files) {
-        <tr>
-            <td>
-                @if (Request.GetVideoPlayer(f) != VideoPlayer.None) {
-                    @Html.ActionLink(Path.GetFileName(f), Global.ActionName.Player, f.GetRouteValues())
-                }
-                else {
-                    <a href="@Request.GetMediaUrl(f)">@Path.GetFileName(f)</a>
-                }
-            </td>
-        </tr>
-    }
+@foreach (FileModel f in Model.Files) {
+    <tr>
+        <td>@Html.ActionLink(Path.GetFileName(f.Path), Global.ActionName.Player, f.Path.GetRouteValues())</td>
+        <td class="right">@f.Size.ToFriendlyString()</td>
+    </tr>
+}
 </table>
 
