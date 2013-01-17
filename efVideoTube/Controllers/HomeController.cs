@@ -11,7 +11,7 @@ using SrtLib;
 using IOFile = System.IO.File;
 
 namespace efVideoTube.Controllers {
-    [Authorize, HandleError]
+    [Authorize]
     public class HomeController : Controller {
         public ViewResult Index(string path) {
             if (path.IsNullOrEmpty())
