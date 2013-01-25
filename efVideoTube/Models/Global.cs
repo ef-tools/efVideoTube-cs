@@ -33,17 +33,21 @@ namespace efVideoTube.Models {
                 request.Url.Authority, request.ApplicationPath.TrimEnd('/'))), path).LocalPath;
         }
 
-        public static VideoPlayer GetVideoPlayer(this HttpRequestBase request, string path) {
+        public static Player GetVideoPlayer(this HttpRequestBase request, string path) {
             string ext = Path.GetExtension(path);
             HttpCookie cookie = request.Cookies[ext];
-            VideoPlayer player;
+            Player player;
             if ((cookie == null) || !Enum.TryParse(cookie.Value, out player)) {
                 if (Media.SupportedMedia.ContainsKey(ext))
                     player = Media.SupportedMedia[ext].Player;
                 else
-                    player = VideoPlayer.None;
+                    player = Player.None;
             }
             return player;
+        }
+
+        public static string GetViewName(this Player player) {
+            return "{0}Player".FormatWith(player);
         }
 
         public static MvcHtmlString RadioButtonWithLabel(this HtmlHelper htmlHelper, string name, string value, bool isChecked, object htmlAttributes = null, string displayName = null) {
@@ -69,7 +73,7 @@ namespace efVideoTube.Models {
 
         public static class ActionName {
             public const string Index = "Index";
-            public const string Player = "Player";
+            public const string Play = "Play";
             public const string Subtitle = "Subtitle";
         }
     }

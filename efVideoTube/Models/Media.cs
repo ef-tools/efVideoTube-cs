@@ -8,31 +8,31 @@ using PureLib.Common;
 namespace efVideoTube.Models {
     public class Media {
         public static Dictionary<string, Media> SupportedMedia { get; private set; }
-        public static VideoPlayer[] Players { get; private set; }
+        public static Player[] Players { get; private set; }
         
         public string Extension { get; private set; }
         public string MIME { get; private set; }
-        public VideoPlayer Player { get; private set; }
-        public VideoPlayer[] AvailablePlayers { get; private set; }
+        public Player Player { get; private set; }
+        public Player[] AvailablePlayers { get; private set; }
 
         static Media() {
-            Players = (VideoPlayer[])Enum.GetValues(typeof(VideoPlayer));
+            Players = (Player[])Enum.GetValues(typeof(Player));
             Media[] media = new Media[] {
-                new Media(".mp4",  "video/mp4",      VideoPlayer.Html5,       VideoPlayer.Silverlight | VideoPlayer.Flash),
-                new Media(".webm", "video/webm",     VideoPlayer.Html5),
-                new Media(".wmv",  "video/x-ms-wmv", VideoPlayer.Silverlight),
-                new Media(".flv",  "video/x-flv",    VideoPlayer.Flash),
-                new Media(".m4a",  "audio/mp4",      VideoPlayer.Silverlight),
+                new Media(".mp4",  "video/mp4",      Player.Html5Video,  Player.Silverlight | Player.Flash),
+                new Media(".webm", "video/webm",     Player.Html5Video),
+                new Media(".wmv",  "video/x-ms-wmv", Player.Silverlight),
+                new Media(".flv",  "video/x-flv",    Player.Flash),
+                new Media(".m4a",  "audio/mp4",      Player.Html5Audio,  Player.Silverlight),
             };
             SupportedMedia = media.ToDictionary(m => m.Extension, m => m, StringComparer.OrdinalIgnoreCase);
         }
 
-        public Media(string extension, string mime, VideoPlayer player, VideoPlayer optionalPlayers = VideoPlayer.None) {
+        public Media(string extension, string mime, Player player, Player optionalPlayers = Player.None) {
             Extension = extension;
             MIME = mime;
             Player = player;
 
-            VideoPlayer availablePlayers = (player | optionalPlayers);
+            Player availablePlayers = (player | optionalPlayers);
             AvailablePlayers = Players.Where(p => availablePlayers.HasFlag(p)).ToArray();
         }
     }

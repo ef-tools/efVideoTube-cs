@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 
 namespace efVideoTube.Models {
-    public class VideoModel {
+    public class MediaModel {
         public string Title { get; set; }
         public string Url { get; set; }
     }

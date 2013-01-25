@@ -39,37 +39,36 @@ namespace efVideoTube.Controllers {
             return null;
         }
 
-        public ActionResult Player(string path) {
+        public ActionResult Play(string path) {
             if (!path.IsNullOrEmpty()) {
                 string physicalPath;
                 string category;
                 GetPhysicalPathAndCategory(path, out physicalPath, out category);
 
-                if (!physicalPath.IsNullOrEmpty())
-                    switch (Request.GetVideoPlayer(path)) {
-                        case VideoPlayer.Html5:
+                if (!physicalPath.IsNullOrEmpty()) {
+                    Player player = Request.GetVideoPlayer(path);
+                    switch (player) {
+                        case Player.Html5Video:
                             string[] subs = Directory.GetFiles(Path.GetDirectoryName(physicalPath), "{0}.*".FormatWith(Path.GetFileNameWithoutExtension(physicalPath)))
                                 .Where(s => Global.SupportedSubtitles.Contains(Path.GetExtension(s)))
                                 .Select(s => Path.ChangeExtension(GetPathForUrl(s, category), Global.VttExt))
                                 .Distinct().ToArray();
-                            return View("Html5Player", new Html5VideoModel {
+                            return View(player.GetViewName(), new Html5VideoModel {
                                 Title = Path.GetFileNameWithoutExtension(path),
                                 Url = Request.GetMediaUrl(path),
                                 SubtitleLanguages = subs.ToDictionary(s => s, s => SubtitleLanguageParser.Parse(s))
                             });
-                        case VideoPlayer.Silverlight:
-                            return View("SilverlightPlayer", new VideoModel {
+                        case Player.Html5Audio:
+                        case Player.Silverlight:
+                        case Player.Flash:
+                            return View(player.GetViewName(), new MediaModel {
                                 Title = Path.GetFileNameWithoutExtension(path),
                                 Url = Request.GetMediaUrl(path),
                             });
-                        case VideoPlayer.Flash:
-                            return View("FlashPlayer", new VideoModel {
-                                Title = Path.GetFileNameWithoutExtension(path),
-                                Url = Request.GetMediaUrl(path),
-                            });
-                        case VideoPlayer.None:
+                        case Player.None:
                             return Redirect(Request.GetMediaUrl(path));
                     }
+                }
             }
             return null;
         }

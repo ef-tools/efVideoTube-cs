@@ -9,7 +9,7 @@
     <fieldset>
         <legend>@m.Extension</legend>
         @if ((m.AvailablePlayers != null) && m.AvailablePlayers.Any()) {
-            foreach (VideoPlayer player in m.AvailablePlayers) {
+            foreach (Player player in m.AvailablePlayers) {
             <p>
                 @Html.RadioButtonWithLabel(m.Extension, player.ToString(), (player == m.Player), new { @class = "player" })
             </p>

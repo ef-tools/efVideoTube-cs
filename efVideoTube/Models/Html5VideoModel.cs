@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 
 namespace efVideoTube.Models {
-    public class Html5VideoModel : VideoModel {
+    public class Html5VideoModel : MediaModel {
         public Dictionary<string, string> SubtitleLanguages { get; set; }
     }
 }

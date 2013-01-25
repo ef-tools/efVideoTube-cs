@@ -5,10 +5,11 @@ using System.Web;
 
 namespace efVideoTube.Models {
     [Flags]
-    public enum VideoPlayer {
+    public enum Player {
         None = 0,
-        Html5 = 1,
-        Silverlight = 2,
-        Flash = 4,
+        Html5Video = 1,
+        Html5Audio = 2,
+        Silverlight = 4,
+        Flash = 8,
     }
 }

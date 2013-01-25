@@ -25,7 +25,7 @@
 <table>
 @foreach (FileModel f in Model.Files) {
     <tr>
-        <td>@Html.ActionLink(Path.GetFileName(f.Path), Global.ActionName.Player, f.Path.GetRouteValues())</td>
+        <td>@Html.ActionLink(Path.GetFileName(f.Path), Global.ActionName.Play, f.Path.GetRouteValues())</td>
         <td class="right">@f.Size.ToFriendlyString()</td>
     </tr>
 }

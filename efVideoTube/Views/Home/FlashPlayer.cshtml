@@ -1,5 +1,5 @@
 ﻿@using efVideoTube.Models;
-@model VideoModel
+@model MediaModel
 @{
     Layout = null;
 }
@@ -14,14 +14,14 @@
 </head>
 <body>
     <div>
-		<a id="player" href="@Model.Url" style="display:block;width:100%;height:100%"></a> 
-		<script>
-		    flowplayer("player", "@Url.Content("~/Content/flowplayer-3.2.15.swf")", {
-		        clip: {
-		            scaling: 'fit'
-		        }
-		    });
-		</script>
+        <a id="player" href="@Model.Url" style="display:block;width:100%;height:100%"></a> 
+        <script>
+            flowplayer("player", "@Url.Content("~/Content/flowplayer-3.2.15.swf")", {
+                clip: {
+                    scaling: 'fit'
+                }
+            });
+        </script>
     </div>
 </body>
 </html>

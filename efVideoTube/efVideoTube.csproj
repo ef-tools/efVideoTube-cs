@@ -76,10 +76,10 @@
     <Compile Include="Models\Global.cs" />
     <Compile Include="Models\Html5VideoModel.cs" />
     <Compile Include="Models\ListModel.cs" />
+    <Compile Include="Models\MediaModel.cs" />
+    <Compile Include="Models\Player.cs" />
     <Compile Include="Models\SubtitleLanguageParser.cs" />
     <Compile Include="Models\Media.cs" />
-    <Compile Include="Models\VideoModel.cs" />
-    <Compile Include="Models\VideoPlayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -118,10 +118,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\PublishProfiles\Disk.pubxml" />
-    <Content Include="Views\Home\Html5Player.cshtml" />
     <Content Include="Views\Home\SilverlightPlayer.cshtml" />
     <Content Include="Views\Home\FlashPlayer.cshtml" />
     <Content Include="Views\Home\Settings.cshtml" />
+    <Content Include="Views\Home\Html5VideoPlayer.cshtml" />
+    <Content Include="Views\Home\Html5AudioPlayer.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
