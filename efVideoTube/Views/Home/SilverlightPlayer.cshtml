@@ -1,85 +1,74 @@
 ﻿@using efVideoTube.Models;
 @model MediaModel
 @{
-    Layout = null;
+    ViewBag.Title = Model.Title;
 }
 
-<!DOCTYPE html>
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>@Model.Title</title>
-    <link href="@Url.Content("~/Content/Player.css")" rel="stylesheet" type="text/css" />
-    <script src="@Url.Content("~/Scripts/SilverlightPlayer.js")" type="text/javascript"></script>
-</head>
-<body>
-    <!-- Runtime errors from Silverlight will be displayed here.
-    This will contain debugging information and should be removed or hidden when debugging is completed -->
-    <div id='errorLocation' style="font-size: small; color: Gray;"></div>
-    <div id="silverlightControlHost">
-        <object data="data:application/x-silverlight," type="application/x-silverlight" width="100%" height="100%">
-            <param name="source" value="@Url.Content("~/Content/MediaPlayerTemplate.xap")" />
-            <param name="onerror" value="onSilverlightError" />
-            <param name="autoUpgrade" value="true" />
-            <param name="minRuntimeVersion" value="4.0.50401.0" />
-            <param name="enableHtmlAccess" value="true" />
-            <param name="enableGPUAcceleration" value="true" />
-            <param name="initparams" value='playerSettings = 
-                <Playlist>
-                    <AutoLoad>true</AutoLoad>
-                    <AutoPlay>true</AutoPlay>
-                    <DisplayTimeCode>false</DisplayTimeCode>
-                    <EnableOffline>true</EnableOffline>
-                    <EnablePopOut>false</EnablePopOut>
-                    <EnableCaptions>false</EnableCaptions>
-                    <EnableCachedComposition>true</EnableCachedComposition>
-                    <StretchNonSquarePixels>StretchToFill</StretchNonSquarePixels>
-                    <StartMuted>false</StartMuted>
-                    <StartWithPlaylistShowing>false</StartWithPlaylistShowing>
-                    <Items>
-                        <PlaylistItem>
-                            <AudioCodec></AudioCodec>
-                            <Description></Description>
-                            <FileSize>0</FileSize>
-                            <IsAdaptiveStreaming>false</IsAdaptiveStreaming>
-                            <MediaSource>@("../.." + Model.Url)</MediaSource>
-                            <ThumbSource></ThumbSource>
-                            <Title>@Model.Title</Title>
-                            <DRM>false</DRM>
-                            <VideoCodec></VideoCodec>
-                            <FrameRate>0</FrameRate>
-                            <Width>0</Width>
-                            <Height>0</Height>
-                            <AspectRatioWidth>0</AspectRatioWidth>
-                            <AspectRatioHeight>0</AspectRatioHeight>
-                        </PlaylistItem>
-                    </Items>
-                </Playlist>'/>  
-            <!--  unused valid silverlight init parameters
-            <param name="enableFrameRateCounter" value="bool" />
-            <param name="enableRedrawRegions" value="bool" />
-            <param name="maxFrameRate" value="int" />
-            <param name="allowHtmlPopupWindow" value="bool"/>
-            <param name="background" value="colorValue"/>
-            <param name="splashScreenSource" value="uri"/>
-            <param name="fullScreen" value="bool"/>
-            <param name="onFullScreenChanged" value="functionname"/>
-            <param name="onResize" value="functionname"/>
-            <param name="onSourceDownloadComplete" value="functionname"/>
-            <param name="onSourceDownloadProgressChanged" value="functionname"/>
-            <param name="windowLess" value="bool"/>
-             -->
+<!-- Runtime errors from Silverlight will be displayed here.
+This will contain debugging information and should be removed or hidden when debugging is completed -->
+<div id='errorLocation' style="font-size: small; color: Gray;"></div>
+<div id="silverlightControlHost">
+    <object data="data:application/x-silverlight," type="application/x-silverlight" width="100%" height="100%">
+        <param name="source" value="@Url.Content("~/Content/MediaPlayerTemplate.xap")" />
+        <param name="onerror" value="onSilverlightError" />
+        <param name="autoUpgrade" value="true" />
+        <param name="minRuntimeVersion" value="4.0.50401.0" />
+        <param name="enableHtmlAccess" value="true" />
+        <param name="enableGPUAcceleration" value="true" />
+        <param name="initparams" value='playerSettings = 
+            <Playlist>
+                <AutoLoad>true</AutoLoad>
+                <AutoPlay>true</AutoPlay>
+                <DisplayTimeCode>false</DisplayTimeCode>
+                <EnableOffline>true</EnableOffline>
+                <EnablePopOut>false</EnablePopOut>
+                <EnableCaptions>false</EnableCaptions>
+                <EnableCachedComposition>true</EnableCachedComposition>
+                <StretchNonSquarePixels>StretchToFill</StretchNonSquarePixels>
+                <StartMuted>false</StartMuted>
+                <StartWithPlaylistShowing>false</StartWithPlaylistShowing>
+                <Items>
+                    <PlaylistItem>
+                        <AudioCodec></AudioCodec>
+                        <Description></Description>
+                        <FileSize>0</FileSize>
+                        <IsAdaptiveStreaming>false</IsAdaptiveStreaming>
+                        <MediaSource>@("../.." + Model.Url)</MediaSource>
+                        <ThumbSource></ThumbSource>
+                        <Title>@Model.Title</Title>
+                        <DRM>false</DRM>
+                        <VideoCodec></VideoCodec>
+                        <FrameRate>0</FrameRate>
+                        <Width>0</Width>
+                        <Height>0</Height>
+                        <AspectRatioWidth>0</AspectRatioWidth>
+                        <AspectRatioHeight>0</AspectRatioHeight>
+                    </PlaylistItem>
+                </Items>
+            </Playlist>'/>  
+        <!--  unused valid silverlight init parameters
+        <param name="enableFrameRateCounter" value="bool" />
+        <param name="enableRedrawRegions" value="bool" />
+        <param name="maxFrameRate" value="int" />
+        <param name="allowHtmlPopupWindow" value="bool"/>
+        <param name="background" value="colorValue"/>
+        <param name="splashScreenSource" value="uri"/>
+        <param name="fullScreen" value="bool"/>
+        <param name="onFullScreenChanged" value="functionname"/>
+        <param name="onResize" value="functionname"/>
+        <param name="onSourceDownloadComplete" value="functionname"/>
+        <param name="onSourceDownloadProgressChanged" value="functionname"/>
+        <param name="windowLess" value="bool"/>
+            -->
 
-            <div onmouseover="highlightDownloadArea(true)" onmouseout="highlightDownloadArea(false)">
-                <img src="Preview.png" style="position: absolute; width: 100%; height: 100%; border-style: none;" onerror="this.style.display='none'" />
-                <div id="overlay" class="fadeLots" style="position: absolute; width: 100%; height: 100%; border-style: none; background-color: white;" />
-            </div>
-            <a href="http://go2.microsoft.com/fwlink/?LinkID=149156">
-                <p class="fadeCompletely" style="position: absolute; width: 100%; height: 100%; border-style: none;" alt="Get Microsoft Silverlight" />
-            </a>
-        </object>
-        <iframe id='_sl_historyFrame' style='visibility: hidden; height: 0; width: 0; border: 0px'></iframe>
-    </div>
-</body>
-</html>
-
+        <div onmouseover="highlightDownloadArea(true)" onmouseout="highlightDownloadArea(false)">
+            <img src="Preview.png" style="position: absolute; width: 100%; height: 100%; border-style: none;" onerror="this.style.display='none'" />
+            <div id="overlay" class="fadeLots" style="position: absolute; width: 100%; height: 100%; border-style: none; background-color: white;" />
+        </div>
+        <a href="http://go2.microsoft.com/fwlink/?LinkID=149156">
+            <p class="fadeCompletely" style="position: absolute; width: 100%; height: 100%; border-style: none;" alt="Get Microsoft Silverlight" />
+        </a>
+    </object>
+    <iframe id='_sl_historyFrame' style='visibility: hidden; height: 0; width: 0; border: 0px'></iframe>
+</div>
+<script src="@Url.Content("~/Scripts/SilverlightPlayer.js")" type="text/javascript"></script>

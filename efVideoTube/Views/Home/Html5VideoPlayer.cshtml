@@ -1,29 +1,18 @@
 ﻿@using efVideoTube.Models;
 @model Html5VideoModel
 @{
-    Layout = null;
+    ViewBag.Title = Model.Title;
     string defaultLang = SubtitleLanguageParser.DefaultLanguage;
     if (Model.SubtitleLanguages.Count == 1) {
         defaultLang = Model.SubtitleLanguages.Single().Value;
     }
 }
 
-<!DOCTYPE html>
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>@Model.Title</title>
-    <link href="@Url.Content("~/Content/Player.css")" rel="stylesheet" type="text/css" />
-</head>
-<body>
-    <div class="videoContainer">
-        <video controls autoplay src="@Model.Url">
-        @foreach (var subLang in Model.SubtitleLanguages) {
-            <track kind="subtitles" src="@Url.Action(Global.ActionName.Subtitle, subLang.Key.GetRouteValues())"
-                srclang="@subLang.Value" label="@subLang.Value" @(subLang.Value == defaultLang ? "default" : string.Empty) />
-        }
-        </video>
-    </div>
-</body>
-</html>
-
+<div class="videoContainer">
+    <video controls autoplay src="@Model.Url">
+    @foreach (var subLang in Model.SubtitleLanguages) {
+        <track kind="subtitles" src="@Url.Action(Global.ActionName.Subtitle, subLang.Key.GetRouteValues())"
+            srclang="@subLang.Value" label="@subLang.Value" @(subLang.Value == defaultLang ? "default" : string.Empty) />
+    }
+    </video>
+</div>

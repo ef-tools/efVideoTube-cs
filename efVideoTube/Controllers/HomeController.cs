@@ -13,6 +13,8 @@ using IOFile = System.IO.File;
 namespace efVideoTube.Controllers {
     [Authorize]
     public class HomeController : Controller {
+        private const string playerMasterPageName = "_PlayerLayout";
+
         public ViewResult Index(string path) {
             if (path.IsNullOrEmpty())
                 return View(new ListModel {
@@ -53,7 +55,7 @@ namespace efVideoTube.Controllers {
                                 .Where(s => Global.SupportedSubtitles.Contains(Path.GetExtension(s)))
                                 .Select(s => Path.ChangeExtension(GetPathForUrl(s, category), Global.VttExt))
                                 .Distinct().ToArray();
-                            return View(player.GetViewName(), new Html5VideoModel {
+                            return View(player.GetViewName(), playerMasterPageName, new Html5VideoModel {
                                 Title = Path.GetFileNameWithoutExtension(path),
                                 Url = Request.GetMediaUrl(path),
                                 SubtitleLanguages = subs.ToDictionary(s => s, s => SubtitleLanguageParser.Parse(s))
@@ -61,7 +63,7 @@ namespace efVideoTube.Controllers {
                         case Player.Html5Audio:
                         case Player.Silverlight:
                         case Player.Flash:
-                            return View(player.GetViewName(), new MediaModel {
+                            return View(player.GetViewName(), playerMasterPageName, new MediaModel {
                                 Title = Path.GetFileNameWithoutExtension(path),
                                 Url = Request.GetMediaUrl(path),
                             });

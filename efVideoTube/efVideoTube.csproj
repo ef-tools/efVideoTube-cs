@@ -123,6 +123,7 @@
     <Content Include="Views\Home\Settings.cshtml" />
     <Content Include="Views\Home\Html5VideoPlayer.cshtml" />
     <Content Include="Views\Home\Html5AudioPlayer.cshtml" />
+    <Content Include="Views\Shared\_PlayerLayout.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
