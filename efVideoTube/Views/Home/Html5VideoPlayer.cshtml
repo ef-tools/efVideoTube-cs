@@ -15,6 +15,10 @@
             srclang="@subLang.Value" label="@subLang.Value" @(subLang.Value == defaultLang ? "default" : string.Empty) />
     }
     </video>
-    <div class="navigation" style="display:none;"></div>
+    <div class="navigation"></div>
 </div>
 <script src="@Url.Content("~/Scripts/jquery.efvt.video.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    var prev = '@Model.Previous';
+    var next = '@Model.Next';
+</script>

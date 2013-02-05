@@ -11,6 +11,7 @@ div.navigation {
     position: fixed;
     top: 10px;
     left: 10px;
+    display: none;
     background-color: White;
     padding: 0px 10px;
     border: 1px solid #111111;

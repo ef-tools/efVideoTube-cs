@@ -31,10 +31,8 @@ namespace efVideoTube.Controllers {
                 if (dir.Exists)
                     return View(new ListModel {
                         Current = path,
-                        Folders = dir.GetDirectories().Where(d => !d.Attributes.HasFlag(FileAttributes.Hidden))
-                            .OrderBy(d => d.Name).Select(d => GetPathForUrl(d.FullName, category)).ToArray(),
-                        Files = dir.GetFiles().Where(f => Media.SupportedMedia.ContainsKey(Path.GetExtension(f.FullName)) && !f.Attributes.HasFlag(FileAttributes.Hidden))
-                            .OrderBy(f => f.Name).Select(f => new FileModel() { Path = GetPathForUrl(f.FullName, category), Size = f.Length }).ToArray()
+                        Folders = GetFolders(dir, category),
+                        Files = GetFiles(dir, category),
                     });
             }
 
@@ -51,15 +49,22 @@ namespace efVideoTube.Controllers {
                     Player player = Request.GetVideoPlayer(path);
                     switch (player) {
                         case Player.Html5Video:
-                            string[] subs = Directory.GetFiles(Path.GetDirectoryName(physicalPath), "{0}.*".FormatWith(Path.GetFileNameWithoutExtension(physicalPath)))
+                            string parent = Path.GetDirectoryName(physicalPath);
+                            string[] subs = Directory.GetFiles(parent, "{0}.*".FormatWith(Path.GetFileNameWithoutExtension(physicalPath)))
                                 .Where(s => Global.SupportedSubtitles.Contains(Path.GetExtension(s)))
-                                .Select(s => Path.ChangeExtension(GetPathForUrl(s, category), Global.VttExt))
-                                .Distinct().ToArray();
-                            return View(player.GetViewName(), playerMasterPageName, new Html5VideoModel {
+                                .Select(s => Path.ChangeExtension(GetPathForUrl(s, category), Global.VttExt)).ToArray();
+                            Html5VideoModel model = new Html5VideoModel {
                                 Title = Path.GetFileNameWithoutExtension(path),
                                 Url = Request.GetMediaUrl(path),
-                                SubtitleLanguages = subs.ToDictionary(s => s, s => SubtitleLanguageParser.Parse(s))
-                            });
+                                SubtitleLanguages = subs.ToDictionary(s => s, s => SubtitleLanguageParser.Parse(s)),
+                            };
+                            FileModel[] files = GetFiles(new DirectoryInfo(parent), category);
+                            int index = Array.FindIndex(files, f => f.Path.Equals(path, StringComparison.OrdinalIgnoreCase));
+                            if (index > 0)
+                                model.Previous = Url.Action(Global.ActionName.Play, files[index - 1].Path.GetRouteValues());
+                            if (index < (files.Length - 1))
+                                model.Next = Url.Action(Global.ActionName.Play, files[index + 1].Path.GetRouteValues());
+                            return View(player.GetViewName(), playerMasterPageName, model);
                         case Player.Html5Audio:
                         case Player.Silverlight:
                         case Player.Flash:
@@ -114,6 +119,16 @@ namespace efVideoTube.Controllers {
             }
             else
                 physicalPath = null;
+        }
+
+        private string[] GetFolders(DirectoryInfo dir, string category) {
+            return dir.GetDirectories().Where(d => !d.Attributes.HasFlag(FileAttributes.Hidden))
+                .OrderBy(d => d.Name).Select(d => GetPathForUrl(d.FullName, category)).ToArray();
+        }
+
+        private FileModel[] GetFiles(DirectoryInfo dir, string category) {
+            return dir.GetFiles().Where(f => Media.SupportedMedia.ContainsKey(Path.GetExtension(f.FullName)) && !f.Attributes.HasFlag(FileAttributes.Hidden))
+                .OrderBy(f => f.Name).Select(f => new FileModel() { Path = GetPathForUrl(f.FullName, category), Size = f.Length }).ToArray();
         }
 
         private string GetPathForUrl(string physicalPath, string category) {

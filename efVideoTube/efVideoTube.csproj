@@ -90,7 +90,6 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\jquery.efvt.video.js" />
-    <Content Include="Scripts\jquery.efvt.index.js" />
     <Content Include="Scripts\jquery.efvt.settings.js" />
     <Content Include="Scripts\flowplayer-3.2.11.min.js" />
     <Content Include="Scripts\SilverlightPlayer.js" />
