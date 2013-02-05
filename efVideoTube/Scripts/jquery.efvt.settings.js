@@ -8,6 +8,6 @@ $(document).ready(function () {
     });
 
     $('input[type="radio"].player').click(function () {
-        setCookie($(this).attr('name'), $(this).val(), domain, path, 360);
+        setCookie($(this).attr('name'), $(this).val());
     });
 });

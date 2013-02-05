@@ -1,6 +1,6 @@
-var setCookie = function (cname, value, domain, path, exdays) {
+var setCookie = function (cname, value) {
     var exdate = new Date();
-    exdate.setDate(exdate.getDate() + exdays);
+    exdate.setDate(exdate.getDate() + 360);
     
     var c = String.format('{0}={1}; expires={2}; path={3}; domain={4}', cname, escape(value), exdate.toGMTString(), escape(path), escape(domain));
     document.cookie = c;
@@ -19,7 +19,11 @@ var getCookie = function (cname) {
 };
 
 var getUrlParameter = function (paramName) {
-    var allParams = document.location.search.substr(1).split('&');
+    return getParameter(paramName, window.location.search);
+};
+
+var getParameter = function (paramName, url) {
+    var allParams = url.substr(url.indexOf('?') + 1).split('&');
     for (var i = 0; i < allParams.length; i++) {
         var paramPair = allParams[i].split('=');
         if (paramName == decodeURIComponent(paramPair[0])) {
