@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    var blockClass = 'block';
     var lineFormat = '<p>{0}:<br /><a href="{1}">{2}</a></p>';
     var innerHtml = '';
     if (prev)
@@ -8,11 +9,21 @@ $(document).ready(function () {
     if (innerHtml) {
         var navigation = $('div.navigation');
         navigation.html(innerHtml);
+        var fadeOut = function () {
+            navigation.fadeOut('fast', function () {
+                navigation.removeClass(blockClass);
+            });
+        };
+        var delayTask;
         $('video').click(function () {
-            navigation.fadeIn('fast');
-            setTimeout(function () {
-                navigation.fadeOut('fast');
-            }, 5000);
+            if (navigation.hasClass(blockClass))
+                fadeOut();
+            else {
+                navigation.addClass(blockClass);
+                navigation.fadeIn('fast');
+                clearTimeout(delayTask);
+                delayTask = setTimeout(fadeOut, 5000);
+            }
         });
     }
 });
