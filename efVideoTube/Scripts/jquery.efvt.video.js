@@ -3,9 +3,9 @@ $(document).ready(function () {
     var lineFormat = '<p>{0}:<br /><a href="{1}">{2}</a></p>';
     var innerHtml = '';
     if (prev)
-        innerHtml += String.format(lineFormat, 'Previous', prev, getParameter('path', prev));
+        innerHtml += String.format(lineFormat, 'Previous', prev, getFileName(prev));
     if (next)
-        innerHtml += String.format(lineFormat, 'Next', next, getParameter('path', next));
+        innerHtml += String.format(lineFormat, 'Next', next, getFileName(next));
     if (innerHtml) {
         var navigation = $('div.navigation');
         navigation.html(innerHtml);
@@ -27,3 +27,8 @@ $(document).ready(function () {
         });
     }
 });
+
+var getFileName = function (url) {
+    var path = getParameter('path', url);
+    return path.substring(path.lastIndexOf('\\') + 1);
+};
