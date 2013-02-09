@@ -15,7 +15,7 @@ $(document).ready(function () {
             });
         };
         var delayTask;
-        $('video').click(function () {
+        $('div.videoContainer').click(function () {
             if (navigation.hasClass(blockClass))
                 fadeOut();
             else {
