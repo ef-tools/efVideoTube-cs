@@ -8,7 +8,7 @@
     }
 }
 
-<div class="videoContainer">
+<div class="playerContainer">
     <video controls autoplay src="@Model.Url">
     @foreach (var subLang in Model.SubtitleLanguages) {
         <track kind="subtitles" src="@Url.Action(Global.ActionName.Subtitle, subLang.Key.GetRouteValues())"

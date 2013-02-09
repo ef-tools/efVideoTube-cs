@@ -1,5 +1,4 @@
 $(document).ready(function () {
-    var blockClass = 'block';
     var lineFormat = '<p>{0}:<br /><a href="{1}">{2}</a></p>';
     var innerHtml = '';
     if (prev)
@@ -9,22 +8,35 @@ $(document).ready(function () {
     if (innerHtml) {
         var navigation = $('div.navigation');
         navigation.html(innerHtml);
+
+        var blockClass = 'block';
+        var animationSpeed = 'fast';
+        var timeout = 5000;
         var fadeOut = function () {
-            navigation.fadeOut('fast', function () {
+            navigation.fadeOut(animationSpeed, function () {
                 navigation.removeClass(blockClass);
             });
         };
         var delayTask;
-        $('div.videoContainer').click(function () {
+        $('div.playerContainer').click(function () {
             if (navigation.hasClass(blockClass))
                 fadeOut();
             else {
                 navigation.addClass(blockClass);
-                navigation.fadeIn('fast');
+                navigation.fadeIn(animationSpeed);
                 clearTimeout(delayTask);
-                delayTask = setTimeout(fadeOut, 5000);
+                delayTask = setTimeout(fadeOut, timeout);
             }
         });
+
+        var opacity = 0.5;
+        navigation.mouseenter(function () {
+            navigation.animate({ opacity: 1 }, animationSpeed);
+            clearTimeout(delayTask);
+        }).mouseleave(function () {
+            navigation.animate({ opacity: opacity }, animationSpeed);
+            delayTask = setTimeout(fadeOut, timeout);
+        }).css('opacity', opacity);
     }
 });
 
