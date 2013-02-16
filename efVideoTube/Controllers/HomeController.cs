@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,13 @@ namespace efVideoTube.Controllers {
     [Authorize]
     public class HomeController : Controller {
         private const string playerMasterPageName = "_PlayerLayout";
+
+        private string[] _styleFilters {
+            get {
+                string styles = ConfigurationManager.AppSettings["styles"];
+                return styles.IsNullOrEmpty() ? null : styles.Split(',');
+            }
+        }
 
         public ViewResult Index(string path) {
             if (path.IsNullOrEmpty())
@@ -94,7 +102,7 @@ namespace efVideoTube.Controllers {
                         for (int i = 0; i < Global.SupportedSubtitles.Length; i++) {
                             physicalPath = Path.ChangeExtension(physicalPath, Global.SupportedSubtitles[i]);
                             if (IOFile.Exists(physicalPath))
-                                subContent = physicalPath.ReadSubtitle().ToVtt();
+                                subContent = physicalPath.ReadSubtitle(_styleFilters).ToVtt();
                         }
                     }
 
