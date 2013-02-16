@@ -127,7 +127,7 @@ namespace efVideoTube.Controllers {
         }
 
         private FileModel[] GetFiles(DirectoryInfo dir, string category) {
-            return dir.GetFiles().Where(f => Media.SupportedMedia.ContainsKey(Path.GetExtension(f.FullName)) && !f.Attributes.HasFlag(FileAttributes.Hidden))
+            return dir.GetFiles().Where(f => Request.ShouldDisplay(f.Name) && !f.Attributes.HasFlag(FileAttributes.Hidden))
                 .OrderBy(f => f.Name).Select(f => new FileModel() { Path = GetPathForUrl(f.FullName, category), Size = f.Length }).ToArray();
         }
 

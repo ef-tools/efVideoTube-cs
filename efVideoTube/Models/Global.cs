@@ -36,7 +36,7 @@ namespace efVideoTube.Models {
         public static Player GetVideoPlayer(this HttpRequestBase request, string path) {
             string ext = Path.GetExtension(path);
             HttpCookie cookie = request.Cookies[ext];
-            Player player;
+            Player player = Player.None;
             if ((cookie == null) || !Enum.TryParse(cookie.Value, out player)) {
                 if (Media.SupportedMedia.ContainsKey(ext))
                     player = Media.SupportedMedia[ext].Player;
@@ -44,6 +44,10 @@ namespace efVideoTube.Models {
                     player = Player.None;
             }
             return player;
+        }
+
+        public static bool ShouldDisplay(this HttpRequestBase request, string path) {
+            return request.GetVideoPlayer(path) != Player.None;
         }
 
         public static string GetViewName(this Player player) {
