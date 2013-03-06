@@ -102,7 +102,7 @@ namespace efVideoTube.Controllers {
                         for (int i = 0; i < Global.SupportedSubtitles.Length; i++) {
                             physicalPath = Path.ChangeExtension(physicalPath, Global.SupportedSubtitles[i]);
                             if (IOFile.Exists(physicalPath))
-                                subContent = physicalPath.ReadSubtitle(_styleFilters).ToVtt();
+                                subContent = physicalPath.ReadSubtitle().FilterStyles(_styleFilters).ToVtt();
                         }
                     }
 
