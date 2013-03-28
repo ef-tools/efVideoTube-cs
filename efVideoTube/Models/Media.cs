@@ -23,6 +23,7 @@ namespace efVideoTube.Models {
                 new Media(".wmv",  "video/x-ms-wmv", Player.Silverlight),
                 new Media(".flv",  "video/x-flv",    Player.Flash),
                 new Media(".m4a",  "audio/mp4",      Player.Html5Audio,  Player.Silverlight),
+                new Media(".mp3",  "audio/mpeg",     Player.Html5Audio,  Player.Silverlight),
             }.ToDictionary(m => m.Extension, m => m, StringComparer.OrdinalIgnoreCase);
         }
 
