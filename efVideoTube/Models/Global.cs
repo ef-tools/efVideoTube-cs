@@ -30,7 +30,7 @@ namespace efVideoTube.Models {
 
         public static string GetMediaUrl(this HttpRequestBase request, string path) {
             return new Uri(new Uri("{0}://{1}{2}/".FormatWith(request.Url.Scheme,
-                request.Url.Authority, request.ApplicationPath.TrimEnd('/'))), path).LocalPath;
+                request.Url.Authority, request.ApplicationPath.TrimEnd('/'))), Uri.EscapeDataString(path)).AbsolutePath;
         }
 
         public static Player GetVideoPlayer(this HttpRequestBase request, string path) {
