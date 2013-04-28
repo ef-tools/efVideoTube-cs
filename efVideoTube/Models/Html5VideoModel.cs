@@ -8,5 +8,6 @@ namespace efVideoTube.Models {
         public Dictionary<string, string> SubtitleLanguages { get; set; }
         public string Previous { get; set; }
         public string Next { get; set; }
+        public string Parent { get; set; }
     }
 }

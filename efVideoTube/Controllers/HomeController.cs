@@ -65,6 +65,7 @@ namespace efVideoTube.Controllers {
                                 Title = Path.GetFileNameWithoutExtension(path),
                                 Url = Request.GetMediaUrl(path),
                                 SubtitleLanguages = subs.ToDictionary(s => s, s => SubtitleLanguageParser.Parse(s)),
+                                Parent = Url.Action(Global.ActionName.Index, GetPathForUrl(parent, category).GetRouteValues()),
                             };
                             FileModel[] files = GetFiles(new DirectoryInfo(parent), category);
                             int index = Array.FindIndex(files, f => f.Path.Equals(path, StringComparison.OrdinalIgnoreCase));

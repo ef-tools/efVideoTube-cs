@@ -17,6 +17,7 @@ div.navigation {
     border: 1px solid #111111;
     box-shadow: #333 2px 2px 2px;
     border-radius: 5px;
+    min-width: 120px;
 }
 div.playerContainer {
     width: 100%;
