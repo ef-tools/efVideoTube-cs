@@ -1,4 +1,8 @@
 $(document).ready(function () {
+    var videoSize = getCookie('videoSize');
+    if (videoSize)
+        $('video').addClass(videoSize);
+
     var lineFormat = '<p>{0}:<br /><a href="{1}">{2}</a></p>';
     var innerHtml = String.format(lineFormat, 'Back', parent, getFileName(parent));
     if (prev)

@@ -5,8 +5,13 @@
 
 <h2>Settings</h2>
 
+<fieldset>
+    <legend>Video Size</legend>
+    <input id="videoSizeFit" class="videoSize" name="videoSize" type="radio" value="Fit to window" />
+    <input class="videoSize" name="videoSize" type="radio" value="Keep original" />
+</fieldset>
 @foreach (Media m in Media.SupportedMedia.Values) {
-    <fieldset>
+    <fieldset class="videoType">
         <legend>@m.Extension</legend>
         @if ((m.AvailablePlayers != null) && m.AvailablePlayers.Any()) {
             foreach (Player player in m.AvailablePlayers) {
