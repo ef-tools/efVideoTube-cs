@@ -1,5 +1,7 @@
 $(document).ready(function () {
     var videoSize = getCookie('videoSize');
+    if (videoSize == null)
+        videoSize = 'fit';
     if (videoSize)
         $('video').addClass(videoSize);
 

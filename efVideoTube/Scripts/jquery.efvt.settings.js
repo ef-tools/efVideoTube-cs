@@ -1,10 +1,11 @@
 $(document).ready(function () {
     var videoSize = getCookie('videoSize');
-    if (videoSize)
-        $('input[type="radio"].videoSize').each(function () {
-            if (this.id == videoSize)
-                $(this).prop('checked', true);
-        });
+    if (videoSize == null)
+        videoSize = 'fit';
+    $('input[type="radio"].videoSize').each(function () {
+        if ($(this).val() == videoSize)
+            $(this).prop('checked', true);
+    });
     $('fieldset.videoType').each(function () {
         var firstRadio = $(this).find('input[type="radio"].player').get(0);
         var name = $(firstRadio).attr('name');
