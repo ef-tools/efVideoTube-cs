@@ -1,9 +1,17 @@
 $(document).ready(function () {
-    var videoSize = getCookie('videoSize');
-    if (videoSize == null)
-        videoSize = 'fit';
-    if (videoSize)
-        $('video').addClass(videoSize);
+    var video = $('video');
+    var setVideoClass = function (videoSize) {
+        if (videoSize != null && !video.hasClass(videoSize))
+            video.removeClass().addClass(videoSize);
+    };
+    setVideoClass(getCookie('videoSize'));
+    $('input[type="radio"].videoSize').click(function () {
+        setVideoClass($(this).val());
+        setCookie('videoSize', $(this).val());
+    }).each(function () {
+        if ($(this).val() == video.get(0).className)
+            $(this).prop('checked', true);
+    });
 
     var lineFormat = '<p>{0}:<br /><a href="{1}">{2}</a></p>';
     var innerHtml = String.format(lineFormat, 'Back', parent, getFileName(parent));
@@ -12,7 +20,7 @@ $(document).ready(function () {
     if (next)
         innerHtml += String.format(lineFormat, 'Next', next, getFileName(next));
     var navigation = $('div.navigation');
-    navigation.html(innerHtml);
+    navigation.append(innerHtml);
 
     var blockClass = 'block';
     var animationSpeed = 'fast';
