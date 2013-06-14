@@ -17,8 +17,8 @@ namespace efVideoTube.Models {
             if (!path.CanExtract())
                 return false;
 
-            path = Path.ChangeExtension(Global.TempAudioCategory 
-                + path.Substring(path.IndexOf(Path.DirectorySeparatorChar)), ".m4a");
+            path = "{0}{1}{2}".FormatWith(Global.TempAudioCategory,
+                Path.DirectorySeparatorChar, Path.ChangeExtension(path, ".m4a"));
             string audioPhysicalPath;
             string category;
             Global.GetPhysicalPathAndCategory(path, out audioPhysicalPath, out category);
