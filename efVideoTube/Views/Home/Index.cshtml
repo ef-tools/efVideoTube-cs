@@ -9,8 +9,9 @@
 
 @if (!Model.Current.IsNullOrEmpty()) {
 <p>
-    @Html.ActionLink("Back", Global.ActionName.Index, Path.GetDirectoryName(Model.Current).GetRouteValues())
     Location: @Model.Current
+    <br />
+    @Html.ActionLink("Back", Global.ActionName.Index, Path.GetDirectoryName(Model.Current).GetRouteValues())
 </p>
 }
 
@@ -27,6 +28,9 @@
     <tr>
         <td>@Html.ActionLink(Path.GetFileName(f.Path), Global.ActionName.Play, f.Path.GetRouteValues())</td>
         <td class="right">@f.Size.ToFriendlyString()</td>
+        @if (f.Path.CanExtract()) {
+            <td>@Html.ActionLink("Audio", Global.ActionName.Play, f.Path.GetRouteValues(true))</td>
+        }
     </tr>
 }
 </table>

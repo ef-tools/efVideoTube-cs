@@ -10,6 +10,7 @@ using PureLib.Common;
 
 namespace efVideoTube.Models {
     public static class Global {
+        public const string TempAudioCategory = "TempAudio";
         public const string VttExt = ".vtt";
         public static string[] SupportedSubtitles { get; private set; }
         public static Dictionary<string, string> CategoryPathMaps { get; private set; }
@@ -17,7 +18,9 @@ namespace efVideoTube.Models {
         static Global() {
             SupportedSubtitles = new string[] { ".srt", ".ass", ".ssa" };
 
-            CategoryPathMaps = new Dictionary<string, string>();
+            CategoryPathMaps = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) {
+                { TempAudioCategory, ConfigurationManager.AppSettings["tempAudioCategory"] },
+            };
             foreach (string pair in ConfigurationManager.AppSettings["categories"].Split('|')) {
                 string[] map = pair.Split(',');
                 CategoryPathMaps.Add(map.First(), map.Last());
@@ -28,9 +31,25 @@ namespace efVideoTube.Models {
             return new { path = path };
         }
 
+        public static object GetRouteValues(this string path, bool isAudioOnly) {
+            return new { path = path, isAudioOnly = isAudioOnly };
+        }
+
         public static string GetMediaUrl(this HttpRequestBase request, string path) {
             return new Uri(new Uri("{0}://{1}{2}/".FormatWith(request.Url.Scheme,
                 request.Url.Authority, request.ApplicationPath.TrimEnd('/'))), Uri.EscapeDataString(path)).AbsolutePath;
+        }
+
+        public static void GetPhysicalPathAndCategory(string path, out string physicalPath, out string category) {
+            string[] parts = path.Split(Path.DirectorySeparatorChar);
+            category = parts.First();
+
+            if (CategoryPathMaps.ContainsKey(category)) {
+                string relativePath = Path.Combine(parts.Skip(1).ToArray());
+                physicalPath = Path.Combine(CategoryPathMaps[category], relativePath);
+            }
+            else
+                physicalPath = null;
         }
 
         public static Player GetVideoPlayer(this HttpRequestBase request, string path) {

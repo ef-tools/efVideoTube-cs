@@ -26,13 +26,14 @@ namespace efVideoTube.Controllers {
         public ViewResult Index(string path) {
             if (path.IsNullOrEmpty())
                 return View(new ListModel {
-                    Folders = Global.CategoryPathMaps.Keys.ToArray(),
+                    Folders = Global.CategoryPathMaps.Keys.Where(
+                        n => !n.Equals(Global.TempAudioCategory, StringComparison.OrdinalIgnoreCase)).ToArray(),
                     Files = new FileModel[0]
                 });
 
             string physicalPath;
             string category;
-            GetPhysicalPathAndCategory(path, out physicalPath, out category);
+            Global.GetPhysicalPathAndCategory(path, out physicalPath, out category);
 
             if (!physicalPath.IsNullOrEmpty()) {
                 DirectoryInfo dir = new DirectoryInfo(physicalPath);
@@ -47,13 +48,16 @@ namespace efVideoTube.Controllers {
             return null;
         }
 
-        public ActionResult Play(string path) {
+        public ActionResult Play(string path, bool isAudioOnly = false) {
             if (!path.IsNullOrEmpty()) {
                 string physicalPath;
                 string category;
-                GetPhysicalPathAndCategory(path, out physicalPath, out category);
+                Global.GetPhysicalPathAndCategory(path, out physicalPath, out category);
 
                 if (!physicalPath.IsNullOrEmpty()) {
+                    if (isAudioOnly && !AudioExtractor.Extract(ref path, physicalPath))
+                        return null;
+
                     Player player = Request.GetVideoPlayer(path);
                     switch (player) {
                         case Player.Html5Video:
@@ -93,7 +97,7 @@ namespace efVideoTube.Controllers {
             if (!path.IsNullOrEmpty()) {
                 string physicalPath;
                 string category;
-                GetPhysicalPathAndCategory(path, out physicalPath, out category);
+                Global.GetPhysicalPathAndCategory(path, out physicalPath, out category);
 
                 if (!physicalPath.IsNullOrEmpty()) {
                     string subContent = null;
@@ -116,18 +120,6 @@ namespace efVideoTube.Controllers {
 
         public ViewResult Settings() {
             return View();
-        }
-
-        private void GetPhysicalPathAndCategory(string path, out string physicalPath, out string category) {
-            string[] parts = path.Split(Path.DirectorySeparatorChar);
-            category = parts.First();
-
-            if (Global.CategoryPathMaps.ContainsKey(category)) {
-                string relativePath = Path.Combine(parts.Skip(1).ToArray());
-                physicalPath = Path.Combine(Global.CategoryPathMaps[category], relativePath);
-            }
-            else
-                physicalPath = null;
         }
 
         private string[] GetFolders(DirectoryInfo dir, string category) {
