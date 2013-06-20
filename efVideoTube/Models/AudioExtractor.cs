@@ -29,7 +29,7 @@ namespace efVideoTube.Models {
             if (!Directory.Exists(audioFolder))
                 Directory.CreateDirectory(audioFolder);
             Process process = Process.Start(ConfigurationManager.AppSettings["mp4box"],
-                "-add \"{0}\"#2 \"{1}\"".FormatWith(physicalPath, audioPhysicalPath));
+                "-add \"{0}\"#audio \"{1}\"".FormatWith(physicalPath, audioPhysicalPath));
             process.WaitForExit();
             return process.ExitCode == 0;
         }
