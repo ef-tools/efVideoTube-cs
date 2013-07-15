@@ -1,3 +1,56 @@
+$.fn.regNavigation = function (container) {
+    var blockClass = 'block';
+    var animationSpeed = 'fast';
+    var timeout = 5000;
+    var opacity = 0.5;
+    var navigation = $(this);
+
+    var fadeOut = function () {
+        navigation.fadeOut(animationSpeed, function () {
+            navigation.removeClass(blockClass);
+        });
+    };
+    var delayTask;
+    $(container).click(function () {
+        if (navigation.hasClass(blockClass))
+            fadeOut();
+        else {
+            navigation.addClass(blockClass);
+            navigation.fadeIn(animationSpeed);
+            clearTimeout(delayTask);
+            delayTask = setTimeout(fadeOut, timeout);
+        }
+    });
+    navigation.mouseenter(function () {
+        navigation.animate({ opacity: 1 }, animationSpeed);
+        clearTimeout(delayTask);
+    }).mouseleave(function () {
+        navigation.animate({ opacity: opacity }, animationSpeed);
+        delayTask = setTimeout(fadeOut, timeout);
+    }).css('opacity', opacity);
+};
+
+var regRadioOptions = function (name, defaultValue, optionChanged) {
+    var onOptionChanged = function (value) {
+        if (optionChanged != null)
+            optionChanged(value);
+    };
+    var value = getCookie(name);
+    if (value === null)
+        value = defaultValue;
+    $('input[type="radio"].' + name).each(function () {
+        if (value === null)
+            value = $(this).val();
+        if ($(this).val() == value) {
+            $(this).prop('checked', true);
+            onOptionChanged(value);
+        }
+    }).click(function () {
+        onOptionChanged($(this).val());
+        setCookie(name, $(this).val());
+    });
+};
+
 var setCookie = function (cname, value) {
     var exdate = new Date();
     exdate.setDate(exdate.getDate() + 360);

@@ -10,7 +10,7 @@ body {
 div.navigation {
     position: fixed;
     top: 10px;
-    left: 10px;
+    right: 10px;
     display: none;
     background-color: White;
     padding: 0px 10px;
@@ -27,6 +27,35 @@ div.playerContainer video.fit {
     height: 100%;
     max-height: 100%;
     max-width: 100%;
+}
+div.audioPanel {
+    margin: 5px 20px;
+    color: white;
+}
+div.audioPlaylist {
+    float: right;
+    padding: 0px 4px;
+    overflow-y: auto;
+    height: 200px;
+}
+div.audioPlaylist p {
+    margin: 2px 0px;
+}
+div.audioPlaylist p a {
+    color: white;
+    text-decoration: none;
+}
+div.audioPlaylist p a.playing {
+    font-weight: bold;
+}
+div.audioOptions {
+    float: left;
+}
+div.audioOptions fieldset {
+    padding: 6px 12px;
+}
+div.audioOptions fieldset legend {
+    color: white;
 }
 div.playerContainer audio {
     width: 100%;

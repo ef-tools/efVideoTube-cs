@@ -59,9 +59,9 @@ namespace efVideoTube.Controllers {
                         return null;
 
                     Player player = Request.GetVideoPlayer(path);
+                    string parent = Path.GetDirectoryName(physicalPath);
                     switch (player) {
                         case Player.Html5Video:
-                            string parent = Path.GetDirectoryName(physicalPath);
                             string[] subs = Directory.GetFiles(parent, "{0}.*".FormatWith(Path.GetFileNameWithoutExtension(physicalPath)))
                                 .Where(s => Global.SupportedSubtitles.Contains(Path.GetExtension(s)))
                                 .Select(s => Path.ChangeExtension(GetPathForUrl(s, category), Global.VttExt)).ToArray();
@@ -79,6 +79,12 @@ namespace efVideoTube.Controllers {
                                 model.Next = Url.Action(Global.ActionName.Play, files[index + 1].Path.GetRouteValues());
                             return View(player.GetViewName(), playerMasterPageName, model);
                         case Player.Html5Audio:
+                            return View(player.GetViewName(), playerMasterPageName, new Html5AudioModel {
+                                Title = Path.GetFileNameWithoutExtension(path),
+                                Url = Request.GetMediaUrl(path),
+                                Parent = Url.Action(Global.ActionName.Index, GetPathForUrl(parent, category).GetRouteValues()),
+                                List = GetFiles(new DirectoryInfo(parent), category).Select(m => Request.GetMediaUrl(m.Path)).ToArray(),
+                            });
                         case Player.Silverlight:
                         case Player.Flash:
                             return View(player.GetViewName(), playerMasterPageName, new MediaModel {

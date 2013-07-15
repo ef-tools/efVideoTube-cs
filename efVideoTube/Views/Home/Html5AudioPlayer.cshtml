@@ -1,9 +1,41 @@
 ﻿@using efVideoTube.Models;
-@model MediaModel
+@using PureLib.Common;
+@model Html5AudioModel
 @{
     ViewBag.Title = Model.Title;
 }
 
 <div class="playerContainer">
     <audio controls autoplay src="@Model.Url"></audio>
+    <div class="audioPanel">
+        <div class="audioOptions">
+            <fieldset>
+                <legend>Loop</legend>
+                <input id="audioLoopNothing" class="audioLoop" name="audioLoop" type="radio" value="nothing" />
+                <label for="audioLoopNothing">Nothing</label>
+                <br />
+                <input id="audioLoopSingle" class="audioLoop" name="audioLoop" type="radio" value="single" />
+                <label for="audioLoopSingle">Single</label>
+                <br />
+                <input id="audioLoopAll" class="audioLoop" name="audioLoop" type="radio" value="all" />
+                <label for="audioLoopAll">All</label>
+            </fieldset>
+            <br />
+            <fieldset>
+                <legend>Order</legend>
+                <input id="audioOrderNormal" class="audioOrder" name="audioOrder" type="radio" value="normal" />
+                <label for="audioOrderNormal">Normal</label>
+                <br />
+                <input id="audioOrderShuffle" class="audioOrder" name="audioOrder" type="radio" value="shuffle" />
+                <label for="audioOrderShuffle">Shuffle</label>
+            </fieldset>
+        </div>
+        <div class="audioPlaylist">
+        </div>
+    </div>
 </div>
+<script src="@Url.Content("~/Scripts/jquery.efvt.audio.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    var parent = '@Model.Parent';
+    var list = @Html.Raw(Model.List.ToJson());
+</script>

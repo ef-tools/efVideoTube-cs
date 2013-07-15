@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using System.Web.Script.Serialization;
 using PureLib.Common;
 
 namespace efVideoTube.Models {
@@ -25,6 +26,10 @@ namespace efVideoTube.Models {
                 string[] map = pair.Split(',');
                 CategoryPathMaps.Add(map.First(), map.Last());
             }
+        }
+
+        public static string ToJson(this object obj) {
+            return new JavaScriptSerializer().Serialize(obj);
         }
 
         public static object GetRouteValues(this string path) {

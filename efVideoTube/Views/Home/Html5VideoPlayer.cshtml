@@ -9,7 +9,7 @@
 }
 
 <div class="playerContainer">
-    <video class="fit" controls autoplay src="@Model.Url">
+    <video controls autoplay src="@Model.Url">
     @foreach (var subLang in Model.SubtitleLanguages) {
         <track kind="subtitles" src="@Url.Action(Global.ActionName.Subtitle, subLang.Key.GetRouteValues())"
             srclang="@subLang.Value" label="@subLang.Value" @(subLang.Value == defaultLang ? "default" : string.Empty) />
