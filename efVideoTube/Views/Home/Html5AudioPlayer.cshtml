@@ -35,7 +35,9 @@
         <p><a href="@Model.Parent">Back</a></p>
     </div>
 </div>
-<script src="@Url.Content("~/Scripts/jquery.efvt.audio.js")" type="text/javascript"></script>
-<script type="text/javascript">
-    var list = @Html.Raw(Model.List.ToJson());
-</script>
+@if (Model.List != null) {
+    <script src="@Url.Content("~/Scripts/jquery.efvt.audio.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+        var list = @Html.Raw(Model.List.ToJson());
+    </script>
+}

@@ -83,7 +83,7 @@ namespace efVideoTube.Controllers {
                                 Title = Path.GetFileNameWithoutExtension(path),
                                 Url = Request.GetMediaUrl(path),
                                 Parent = Url.Action(Global.ActionName.Index, GetPathForUrl(parent, category).GetRouteValues()),
-                                List = GetFiles(new DirectoryInfo(parent), category).Select(m => Request.GetMediaUrl(m.Path)).ToArray(),
+                                List = isAudioOnly ? null : GetFiles(new DirectoryInfo(parent), category).Select(m => Request.GetMediaUrl(m.Path)).ToArray(),
                             });
                         case Player.Silverlight:
                         case Player.Flash:
