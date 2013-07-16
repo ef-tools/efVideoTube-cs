@@ -3,7 +3,6 @@
         var link = playlist.find('a#' + index);
         link.addClass(playingClassName);
         document.title = link.text();
-        window.location.hash = index;
         audio.src = list[index];
         audio.load();
         audio.play();
@@ -36,12 +35,14 @@
                     index++;
                 else
                     index = Math.floor(Math.random() * list.length);
+                window.location.hash = index;
                 play();
                 break;
         }
     });
     playlist.find('a').click(function (e) {
         e.preventDefault();
+        playlist.find('a#' + index).removeClass(playingClassName);
         index = $(this).parent().index();
         play();
     });
