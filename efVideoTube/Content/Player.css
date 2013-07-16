@@ -29,7 +29,12 @@ div.playerContainer video.fit {
     max-width: 100%;
 }
 div.audioPanel {
+    color: white;
+}
+div.audioPanel div {
     margin: 5px 20px;
+}
+div.audioPanel p a {
     color: white;
 }
 div.audioPlaylist {
@@ -47,6 +52,7 @@ div.audioPlaylist p a {
 }
 div.audioPlaylist p a.playing {
     font-weight: bold;
+    text-decoration: underline;
 }
 div.audioOptions {
     float: left;
