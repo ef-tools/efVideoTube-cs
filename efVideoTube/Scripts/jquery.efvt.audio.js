@@ -21,6 +21,7 @@
             index = i;
         playlist.append(String.format(lineFormat, i, fileName));
     }
+    window.location.hash = index;
 
     var playingClassName = 'playing';
     var audio = $('audio').get(0);
