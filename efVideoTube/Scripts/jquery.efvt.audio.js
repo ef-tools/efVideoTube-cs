@@ -33,7 +33,7 @@
             case 'all':
                 playlist.find('a#' + index).removeClass(playingClassName);
                 if (getCookie('audioOrder') == 'normal')
-                    index++;
+                    index = (index + 1) % list.length;
                 else
                     index = Math.floor(Math.random() * list.length);
                 window.location.hash = index;
