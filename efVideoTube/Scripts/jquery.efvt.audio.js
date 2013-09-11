@@ -1,4 +1,8 @@
 ﻿$(document).ready(function () {
+    var margin = 4;
+    var scrollToPlayingItem = function (i) {
+        window.location.hash = (i < margin) ? 0 : i - margin;
+    };
     var play = function () {
         var link = playlist.find('a#' + index);
         link.addClass(playingClassName);
@@ -18,7 +22,7 @@
                     index = (index + 1) % list.length;
                 else
                     index = Math.floor(Math.random() * list.length);
-                window.location.hash = index;
+                scrollToPlayingItem(index);
                 play();
                 break;
         }
@@ -37,7 +41,7 @@
             index = i;
         playlist.append(String.format(lineFormat, i, fileName));
     }
-    window.location.hash = index;
+    scrollToPlayingItem(index);
 
     var playingClassName = 'playing';
     var audio = $('audio').get(0);
