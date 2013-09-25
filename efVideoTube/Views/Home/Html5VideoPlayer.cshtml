@@ -2,10 +2,7 @@
 @model Html5VideoModel
 @{
     ViewBag.Title = Model.Title;
-    string defaultLang = SubtitleLanguageParser.DefaultLanguage;
-    if (Model.SubtitleLanguages.Count == 1) {
-        defaultLang = Model.SubtitleLanguages.Single().Value;
-    }
+    string defaultLang = Model.SubtitleLanguages.Values.GetDefaultLanguage();
 }
 
 <div class="playerContainer">
