@@ -5,7 +5,7 @@ using System.Web;
 
 namespace efVideoTube.Models {
     public class FileModel {
-        public string Path { get; set; }
+        public string PathForUrl { get; set; }
         public long Size { get; set; }
     }
 }

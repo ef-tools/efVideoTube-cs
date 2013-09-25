@@ -72,18 +72,18 @@ namespace efVideoTube.Controllers {
                                 Parent = Url.Action(Global.ActionName.Index, GetPathForUrl(parent, category).GetRouteValues()),
                             };
                             FileModel[] files = GetFiles(new DirectoryInfo(parent), category);
-                            int index = Array.FindIndex(files, f => f.Path.Equals(path, StringComparison.OrdinalIgnoreCase));
+                            int index = Array.FindIndex(files, f => f.PathForUrl.Equals(path, StringComparison.OrdinalIgnoreCase));
                             if (index > 0)
-                                model.Previous = Url.Action(Global.ActionName.Play, files[index - 1].Path.GetRouteValues());
+                                model.Previous = Url.Action(Global.ActionName.Play, files[index - 1].PathForUrl.GetRouteValues());
                             if (index < (files.Length - 1))
-                                model.Next = Url.Action(Global.ActionName.Play, files[index + 1].Path.GetRouteValues());
+                                model.Next = Url.Action(Global.ActionName.Play, files[index + 1].PathForUrl.GetRouteValues());
                             return View(player.GetViewName(), playerMasterPageName, model);
                         case Player.Html5Audio:
                             return View(player.GetViewName(), playerMasterPageName, new Html5AudioModel {
                                 Title = Path.GetFileNameWithoutExtension(path),
                                 Url = Request.GetMediaUrl(path),
                                 Parent = Url.Action(Global.ActionName.Index, GetPathForUrl(parent, category).GetRouteValues()),
-                                List = isAudioOnly ? null : GetFiles(new DirectoryInfo(parent), category).Select(m => Request.GetMediaUrl(m.Path)).ToArray(),
+                                List = isAudioOnly ? null : GetFiles(new DirectoryInfo(parent), category).Select(m => Request.GetMediaUrl(m.PathForUrl)).ToArray(),
                             });
                         case Player.Silverlight:
                         case Player.Flash:
@@ -135,7 +135,7 @@ namespace efVideoTube.Controllers {
 
         private FileModel[] GetFiles(DirectoryInfo dir, string category) {
             return dir.GetFiles().Where(f => Request.ShouldDisplay(f.Name) && !f.Attributes.HasFlag(FileAttributes.Hidden))
-                .OrderBy(f => f.Name).Select(f => new FileModel() { Path = GetPathForUrl(f.FullName, category), Size = f.Length }).ToArray();
+                .OrderBy(f => f.Name).Select(f => new FileModel() { PathForUrl = GetPathForUrl(f.FullName, category), Size = f.Length }).ToArray();
         }
 
         private string GetPathForUrl(string physicalPath, string category) {

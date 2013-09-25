@@ -6,7 +6,7 @@ using System.Web;
 
 namespace efVideoTube.Models {
     public static class SubtitleLanguageParser {
-        public const string DefaultLanguage = "Default";
+        public const string DefaultLanguage = sc;
         private const string en = "English";
         private const string sc = "简体中文";
         private const string tc = "繁體中文";
