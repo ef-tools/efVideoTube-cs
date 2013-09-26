@@ -1,6 +1,11 @@
 ﻿$(document).ready(function () {
-    var list;
     var margin = 4;
+    var playingClassName = 'playing';
+    var playlist = $('div.audioPlaylist');
+    var audio;
+    var list;
+    var index = -1;
+
     var scrollToPlayingItem = function (i) {
         window.location.hash = (i < margin) ? 0 : i - margin;
     };
@@ -32,12 +37,8 @@
     regRadioOptions('audioOrder', null, null);
     regRadioOptions('audioLoop', null, null);
 
-    var playlist = $('div.audioPlaylist');
-    var index = -1;
-    var lineFormat = '<p><a id="{0}" href="#">{1}</a></p>';
-
     $.ajax({
-        type: "GET",
+        type: "POST",
         url: "../Home/Playlist",
         traditional: true,
         dataType: "json",
@@ -47,28 +48,28 @@
         },
         success: function (response) {
             list = response;
+
+            var lineFormat = '<p><a id="{0}" href="#">{1}</a></p>';
+            for (i in list) {
+                if (list[i].Name == document.title)
+                    index = i;
+                playlist.append(String.format(lineFormat, i, list[i].Name));
+            }
+            scrollToPlayingItem(index);
+
+            audio = $('audio').get(0);
+            audio.addEventListener('ended', goNext);
+            $('a.next').click(function (e) {
+                e.preventDefault();
+                goNext(e);
+            });
+            playlist.find('a').click(function (e) {
+                e.preventDefault();
+                playlist.find('a#' + index).removeClass(playingClassName);
+                index = $(this).parent().index();
+                play();
+            });
+            playlist.find('a#' + index).addClass(playingClassName);
         }
     });
-
-    for (i in list) {
-        if (list[i].Name == document.title)
-            index = i;
-        playlist.append(String.format(lineFormat, i, fileName));
-    }
-    scrollToPlayingItem(index);
-
-    var playingClassName = 'playing';
-    var audio = $('audio').get(0);
-    audio.addEventListener('ended', goNext);
-    $('a.next').click(function (e) {
-        e.preventDefault();
-        goNext(e);
-    });
-    playlist.find('a').click(function (e) {
-        e.preventDefault();
-        playlist.find('a#' + index).removeClass(playingClassName);
-        index = $(this).parent().index();
-        play();
-    });
-    playlist.find('a#' + index).addClass(playingClassName);
 });
