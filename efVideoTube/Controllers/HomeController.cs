@@ -83,7 +83,6 @@ namespace efVideoTube.Controllers {
                                 Title = Path.GetFileNameWithoutExtension(path),
                                 Url = Request.GetMediaUrl(path),
                                 Parent = Url.Action(Global.ActionName.Index, GetPathForUrl(parent, category).GetRouteValues()),
-                                List = isAudioOnly ? null : GetFiles(new DirectoryInfo(parent), category).Select(m => Request.GetMediaUrl(m.PathForUrl)).ToArray(),
                             });
                         case Player.Silverlight:
                         case Player.Flash:
@@ -120,6 +119,36 @@ namespace efVideoTube.Controllers {
                     if (!subContent.IsNullOrEmpty())
                         return File(Encoding.UTF8.GetBytes(subContent), "text/vtt");
                 }
+            }
+            return null;
+        }
+
+        public RedirectResult Audio(string path) {
+            if (!path.IsNullOrEmpty()) {
+                string physicalPath;
+                string category;
+                Global.GetPhysicalPathAndCategory(path, out physicalPath, out category);
+
+                if (AudioExtractor.Extract(ref path, physicalPath))
+                    return Redirect(Request.GetMediaUrl(path));
+            }
+            return null;
+        }
+
+        public JsonResult Playlist(string path, bool isAudio = false) {
+            if (!path.IsNullOrEmpty()) {
+                string physicalPath;
+                string category;
+                Global.GetPhysicalPathAndCategory(path, out physicalPath, out category);
+
+                string parent = Path.GetDirectoryName(physicalPath);
+                return Json(from m in GetFiles(new DirectoryInfo(parent), category)
+                            select new {
+                                Name = Path.GetFileNameWithoutExtension(m.PathForUrl),
+                                Url = (isAudio && m.PathForUrl.CanExtract()) ?
+                                    Url.Action(Global.ActionName.Audio, m.PathForUrl.GetRouteValues()) :
+                                    Request.GetMediaUrl(m.PathForUrl)
+                            });
             }
             return null;
         }

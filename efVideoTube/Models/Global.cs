@@ -103,6 +103,8 @@ namespace efVideoTube.Models {
             public const string Index = "Index";
             public const string Play = "Play";
             public const string Subtitle = "Subtitle";
+            public const string Audio = "Audio";
+            public const string Playlist = "Playlist";
         }
     }
 }

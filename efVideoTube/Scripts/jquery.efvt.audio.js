@@ -1,4 +1,5 @@
 ﻿$(document).ready(function () {
+    var list;
     var margin = 4;
     var scrollToPlayingItem = function (i) {
         window.location.hash = (i < margin) ? 0 : i - margin;
@@ -7,7 +8,7 @@
         var link = playlist.find('a#' + index);
         link.addClass(playingClassName);
         document.title = link.text();
-        audio.src = list[index];
+        audio.src = list[index].Url;
         audio.load();
         audio.play();
     };
@@ -34,10 +35,23 @@
     var playlist = $('div.audioPlaylist');
     var index = -1;
     var lineFormat = '<p><a id="{0}" href="#">{1}</a></p>';
+
+    $.ajax({
+        type: "GET",
+        url: "../Home/Playlist",
+        traditional: true,
+        dataType: "json",
+        data: {
+            path: getUrlParameter('path'),
+            isAudio: true
+        },
+        success: function (response) {
+            list = response;
+        }
+    });
+
     for (i in list) {
-        var path = list[i];
-        var fileName = decodeURIComponent(path.substring(path.lastIndexOf('/') + 1, path.lastIndexOf('.')));
-        if (fileName == document.title)
+        if (list[i].Name == document.title)
             index = i;
         playlist.append(String.format(lineFormat, i, fileName));
     }
