@@ -62,13 +62,13 @@ namespace efVideoTube.Controllers {
                     string parent = Path.GetDirectoryName(physicalPath);
                     switch (player) {
                         case Player.Html5Video:
-                            string[] subs = Directory.GetFiles(parent, "{0}.*".FormatWith(Path.GetFileNameWithoutExtension(physicalPath)))
+                            string[] subs = Directory.EnumerateFiles(parent, "{0}.*".FormatWith(Path.GetFileNameWithoutExtension(physicalPath)))
                                 .Where(s => Global.SupportedSubtitles.Contains(Path.GetExtension(s)))
                                 .Select(s => Path.ChangeExtension(GetPathForUrl(s, category), Global.VttExt)).ToArray();
                             Html5VideoModel model = new Html5VideoModel {
                                 Title = Path.GetFileNameWithoutExtension(path),
                                 Url = Request.GetMediaUrl(path),
-                                SubtitleLanguages = subs.ToDictionary(s => s, s => SubtitleLanguageParser.Parse(s)),
+                                SubtitleLanguages = subs.ToSubtitleLanguages(),
                                 Parent = Url.Action(Global.ActionName.Index, GetPathForUrl(parent, category).GetRouteValues()),
                             };
                             FileModel[] files = GetFiles(new DirectoryInfo(parent), category);
@@ -158,12 +158,12 @@ namespace efVideoTube.Controllers {
         }
 
         private string[] GetFolders(DirectoryInfo dir, string category) {
-            return dir.GetDirectories().Where(d => !d.Attributes.HasFlag(FileAttributes.Hidden))
+            return dir.EnumerateDirectories().Where(d => !d.Attributes.HasFlag(FileAttributes.Hidden))
                 .OrderBy(d => d.Name).Select(d => GetPathForUrl(d.FullName, category)).ToArray();
         }
 
         private FileModel[] GetFiles(DirectoryInfo dir, string category) {
-            return dir.GetFiles().Where(f => Request.ShouldDisplay(f.Name) && !f.Attributes.HasFlag(FileAttributes.Hidden))
+            return dir.EnumerateFiles().Where(f => Request.ShouldDisplay(f.Name) && !f.Attributes.HasFlag(FileAttributes.Hidden))
                 .OrderBy(f => f.Name).Select(f => new FileModel() { PathForUrl = GetPathForUrl(f.FullName, category), Size = f.Length }).ToArray();
         }
 
