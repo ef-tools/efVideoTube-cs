@@ -1,15 +1,16 @@
-﻿@using efVideoTube.Models;
+﻿@using System.Globalization;
+@using efVideoTube.Models;
 @model Html5VideoModel
 @{
     ViewBag.Title = Model.Title;
-    string defaultLang = Model.SubtitleLanguages.Values.GetDefaultLanguage();
+    CultureInfo defaultLang = Model.SubtitleLanguages.Values.GetDefaultLanguage();
 }
 
 <div class="playerContainer">
     <video controls autoplay src="@Model.Url">
     @foreach (var subLang in Model.SubtitleLanguages) {
         <track kind="subtitles" src="@Url.Action(Global.ActionName.Subtitle, subLang.Key.GetRouteValues())"
-            srclang="@subLang.Value" label="@subLang.Value" @(subLang.Value == defaultLang ? "default" : string.Empty) />
+            srclang="@subLang.Value.IetfLanguageTag" label="@subLang.Value.NativeName" @(subLang.Value == defaultLang ? "default" : string.Empty) />
     }
     </video>
     <div class="navigation">
