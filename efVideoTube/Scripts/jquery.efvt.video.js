@@ -1,10 +1,9 @@
 $(document).ready(function () {
     var video = $('video');
-    var setVideoClass = function (videoSize) {
-        if (videoSize != null && !video.hasClass(videoSize))
-            video.removeClass().addClass(videoSize);
+    var getFileName = function (url) {
+        var path = getParameter('path', url);
+        return path.substring(path.lastIndexOf('\\') + 1);
     };
-    regRadioOptions('videoSize', null, setVideoClass);
 
     var lineFormat = '<p>{0}:<br /><a href="{1}">{2}</a></p>';
     var innerHtml = String.format(lineFormat, 'Back', parent, getFileName(parent));
@@ -15,10 +14,9 @@ $(document).ready(function () {
     var navigation = $('div.navigation');
     navigation.append(innerHtml);
 
-    navigation.regNavigation('div.playerContainer');
+    $('div.playerContainer').regNavigation(navigation);
+    regRadioOptions('videoSize', null, function (videoSize) {
+        if (videoSize != null && !video.hasClass(videoSize))
+            video.removeClass().addClass(videoSize);
+    });
 });
-
-var getFileName = function (url) {
-    var path = getParameter('path', url);
-    return path.substring(path.lastIndexOf('\\') + 1);
-};

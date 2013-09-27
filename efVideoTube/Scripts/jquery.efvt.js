@@ -1,9 +1,8 @@
-$.fn.regNavigation = function (container) {
+$.fn.regNavigation = function (navigation) {
     var blockClass = 'block';
     var animationSpeed = 'fast';
     var timeout = 5000;
     var opacity = 0.5;
-    var navigation = $(this);
 
     var fadeOut = function () {
         navigation.fadeOut(animationSpeed, function () {
@@ -11,7 +10,7 @@ $.fn.regNavigation = function (container) {
         });
     };
     var delayTask;
-    $(container).click(function () {
+    $(this).click(function () {
         if (navigation.hasClass(blockClass))
             fadeOut();
         else {
