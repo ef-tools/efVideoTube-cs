@@ -39,9 +39,10 @@ div.audioPanel p a {
 }
 div.audioPlaylist {
     float: right;
-    padding: 0px 4px;
+    padding: 0px 8px;
     overflow-y: auto;
     height: 200px;
+    min-width: 150px;
 }
 div.audioPlaylist p {
     margin: 2px 0px;
