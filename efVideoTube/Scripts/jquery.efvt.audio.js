@@ -52,7 +52,7 @@
             var lineFormat = '<p><a id="{0}" href="#">{1}</a></p>';
             for (i in list) {
                 if (list[i].Name == document.title)
-                    index = i;
+                    index = parseInt(i);
                 playlist.append(String.format(lineFormat, i, list[i].Name));
             }
             scrollToPlayingItem(index);
