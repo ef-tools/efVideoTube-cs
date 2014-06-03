@@ -106,18 +106,22 @@ namespace efVideoTube.Controllers {
 
                 if (!physicalPath.IsNullOrEmpty()) {
                     string subContent = null;
+                    string contentType = "text/plain";
                     if (IOFile.Exists(physicalPath))
                         subContent = physicalPath.ReadText(Encoding.UTF8);
                     else {
                         for (int i = 0; i < Global.SupportedSubtitles.Length; i++) {
                             physicalPath = Path.ChangeExtension(physicalPath, Global.SupportedSubtitles[i]);
-                            if (IOFile.Exists(physicalPath))
+                            if (IOFile.Exists(physicalPath)) {
                                 subContent = physicalPath.ReadSubtitle().FilterStyles(_styleFilters).ToVtt();
+                                contentType = "text/vtt";
+                                break;
+                            }
                         }
                     }
 
                     if (!subContent.IsNullOrEmpty())
-                        return File(Encoding.UTF8.GetBytes(subContent), "text/vtt");
+                        return File(Encoding.UTF8.GetBytes(subContent), contentType);
                 }
             }
             return null;
