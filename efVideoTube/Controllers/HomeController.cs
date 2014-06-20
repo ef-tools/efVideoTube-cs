@@ -147,6 +147,7 @@ namespace efVideoTube.Controllers {
 
                 string parent = Path.GetDirectoryName(physicalPath);
                 return Json(from m in GetFiles(new DirectoryInfo(parent), category)
+                            where !isAudio || m.PathForUrl.CanExtract()
                             select new {
                                 Name = Path.GetFileNameWithoutExtension(m.PathForUrl),
                                 Url = (isAudio && m.PathForUrl.CanExtract()) ?
