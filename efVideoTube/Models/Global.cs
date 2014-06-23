@@ -57,7 +57,7 @@ namespace efVideoTube.Models {
                 physicalPath = null;
         }
 
-        public static Player GetVideoPlayer(this HttpRequestBase request, string path) {
+        public static Player GetPlayer(this HttpRequestBase request, string path) {
             string ext = Path.GetExtension(path);
             HttpCookie cookie = request.Cookies[ext];
             Player player = Player.None;
@@ -71,7 +71,7 @@ namespace efVideoTube.Models {
         }
 
         public static bool ShouldDisplay(this HttpRequestBase request, string path) {
-            return request.GetVideoPlayer(path) != Player.None;
+            return request.GetPlayer(path) != Player.None;
         }
 
         public static string GetViewName(this Player player) {

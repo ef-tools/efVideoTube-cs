@@ -58,7 +58,7 @@ namespace efVideoTube.Controllers {
                     if (isAudioOnly && !AudioExtractor.Extract(ref path, physicalPath))
                         return null;
 
-                    Player player = Request.GetVideoPlayer(path);
+                    Player player = Request.GetPlayer(path);
                     string parent = Path.GetDirectoryName(physicalPath);
                     switch (player) {
                         case Player.Html5Video:
@@ -147,7 +147,7 @@ namespace efVideoTube.Controllers {
 
                 string parent = Path.GetDirectoryName(physicalPath);
                 return Json(from m in GetFiles(new DirectoryInfo(parent), category)
-                            where !isAudio || m.PathForUrl.CanExtract()
+                            where m.PathForUrl.CanExtract() || (Request.GetPlayer(m.PathForUrl) == Player.Html5Audio)
                             select new {
                                 Name = Path.GetFileNameWithoutExtension(m.PathForUrl),
                                 Url = (isAudio && m.PathForUrl.CanExtract()) ?
