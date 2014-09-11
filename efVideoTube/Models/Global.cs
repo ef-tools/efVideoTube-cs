@@ -59,14 +59,15 @@ namespace efVideoTube.Models {
 
         public static Player GetPlayer(this HttpRequestBase request, string path) {
             string ext = Path.GetExtension(path);
+            if (!Media.SupportedMedia.ContainsKey(ext))
+                return Player.None;
+            if (path.StartsWith(Global.TempAudioCategory, StringComparison.OrdinalIgnoreCase))
+                return Player.Html5Audio;
+
             HttpCookie cookie = request.Cookies[ext];
             Player player = Player.None;
-            if ((cookie == null) || !Enum.TryParse(cookie.Value, out player)) {
-                if (Media.SupportedMedia.ContainsKey(ext))
-                    player = Media.SupportedMedia[ext].Player;
-                else
-                    player = Player.None;
-            }
+            if ((cookie == null) || !Enum.TryParse(cookie.Value, out player) || !Media.SupportedMedia[ext].AvailablePlayers.Contains(player))
+                player = Media.SupportedMedia[ext].Player;
             return player;
         }
 
