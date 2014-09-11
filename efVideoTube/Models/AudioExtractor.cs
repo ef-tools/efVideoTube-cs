@@ -13,7 +13,7 @@ namespace efVideoTube.Models {
             { ".mp4", new AudioConfig(".m4a", ConfigurationManager.AppSettings["mp4box"],
                 "-add \"{0}\"#audio \"{1}\"") },
             { ".webm", new AudioConfig(".webm", ConfigurationManager.AppSettings["mkvtoolnix"],
-                "-o \"{1}\" --webm --language 1:eng --default-track 1:yes --forced-track 1:no -a 1 -D -S -T --no-global-tags --no-chapters ( \"{0}\" ) --track-order 0:1") }
+                "-o \"{1}\" -a 1 -D -S -T --no-global-tags --no-chapters \"{0}\"") }
         };
 
         public static bool CanExtract(this string path) {
