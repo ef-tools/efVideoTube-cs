@@ -1,13 +1,9 @@
-﻿@using System.Configuration;
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
-    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
-    <script src="@Url.Content(ConfigurationManager.AppSettings["jquery"])" type="text/javascript"></script>
-    <script src="@Url.Content("~/Scripts/jquery.efvt.js")" type="text/javascript"></script>
+    @Styles.Render("~/css/site")
 </head>
 <body>
     <div class="page">
@@ -31,6 +27,9 @@
         <div id="footer">
         </div>
     </div>
+
+    @Scripts.Render("~/js/site")
+    @RenderSection("scripts", required: false)
     <script type="text/javascript">
         var domain = '@Request.Url.Host';
         var path = '@Request.ApplicationPath';

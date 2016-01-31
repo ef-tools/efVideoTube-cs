@@ -23,9 +23,12 @@
         </p>
     </div>
 </div>
-<script src="@Url.Content("~/Scripts/jquery.efvt.video.js")" type="text/javascript"></script>
-<script type="text/javascript">
-    var prev = '@Model.Previous';
-    var next = '@Model.Next';
-    var parent = '@Model.Parent';
-</script>
+
+@section scripts {
+    <script src="@Url.Content("~/Scripts/jquery.efvt.video.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+        var prev = '@Model.Previous';
+        var next = '@Model.Next';
+        var parent = '@Model.Parent';
+    </script>
+}

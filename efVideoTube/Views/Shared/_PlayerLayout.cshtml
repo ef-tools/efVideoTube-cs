@@ -5,12 +5,13 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
-    <link href="@Url.Content("~/Content/Player.css")" rel="stylesheet" type="text/css" />
-    <script src="@Url.Content(ConfigurationManager.AppSettings["jquery"])" type="text/javascript"></script>
-    <script src="@Url.Content("~/Scripts/jquery.efvt.js")" type="text/javascript"></script>
+    @Styles.Render("~/css/player")
 </head>
 <body>
     @RenderBody()
+
+    @Scripts.Render("~/js/site")
+    @RenderSection("scripts", required: false)
     <script type="text/javascript">
         var domain = '@Request.Url.Host';
         var path = '@Request.ApplicationPath';
