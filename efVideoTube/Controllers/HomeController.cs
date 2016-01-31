@@ -8,7 +8,6 @@ using System.Web;
 using System.Web.Mvc;
 using efVideoTube.Models;
 using PureLib.Common;
-using SrtLib;
 using IOFile = System.IO.File;
 
 namespace efVideoTube.Controllers {
@@ -16,18 +15,11 @@ namespace efVideoTube.Controllers {
     public class HomeController : Controller {
         private const string playerMasterPageName = "_PlayerLayout";
 
-        private string[] _styleFilters {
-            get {
-                string styles = ConfigurationManager.AppSettings["styles"];
-                return styles.IsNullOrEmpty() ? null : styles.Split(',');
-            }
-        }
-
         public ViewResult Index(string path) {
             if (path.IsNullOrEmpty())
                 return View(new ListModel {
                     Folders = Global.CategoryPathMaps.Keys.Where(
-                        n => !n.Equals(Global.TempAudioCategory, StringComparison.OrdinalIgnoreCase)).ToArray(),
+                        n => !n.Equals(Global.VideoCacheCategory, StringComparison.OrdinalIgnoreCase)).ToArray(),
                     Files = new FileModel[0]
                 });
 
@@ -63,8 +55,8 @@ namespace efVideoTube.Controllers {
                     switch (player) {
                         case Player.Html5Video:
                             string[] subs = Directory.EnumerateFiles(parent, "{0}.*".FormatWith(Path.GetFileNameWithoutExtension(physicalPath)))
-                                .Where(s => Global.SupportedSubtitles.Contains(Path.GetExtension(s)))
-                                .Select(s => Path.ChangeExtension(GetPathForUrl(s, category), Global.VttExt)).ToArray();
+                                .Where(s => SubtitleConverter.CanExtract(s))
+                                .Select(s => GetPathForUrl(s, category)).ToArray();
                             Html5VideoModel model = new Html5VideoModel {
                                 Title = Path.GetFileNameWithoutExtension(path),
                                 Url = Request.GetMediaUrl(path),
@@ -95,39 +87,22 @@ namespace efVideoTube.Controllers {
                     }
                 }
             }
-            return null;
+            return HttpNotFound();
         }
 
-        public FileContentResult Subtitle(string path) {
+        public ActionResult Subtitle(string path) {
             if (!path.IsNullOrEmpty()) {
                 string physicalPath;
                 string category;
                 Global.GetPhysicalPathAndCategory(path, out physicalPath, out category);
 
-                if (!physicalPath.IsNullOrEmpty()) {
-                    string subContent = null;
-                    string contentType = "text/plain";
-                    if (IOFile.Exists(physicalPath))
-                        subContent = physicalPath.ReadText(Encoding.UTF8);
-                    else {
-                        for (int i = 0; i < Global.SupportedSubtitles.Length; i++) {
-                            physicalPath = Path.ChangeExtension(physicalPath, Global.SupportedSubtitles[i]);
-                            if (IOFile.Exists(physicalPath)) {
-                                subContent = physicalPath.ReadSubtitle().FilterStyles(_styleFilters).ToVtt();
-                                contentType = "text/vtt";
-                                break;
-                            }
-                        }
-                    }
-
-                    if (!subContent.IsNullOrEmpty())
-                        return File(Encoding.UTF8.GetBytes(subContent), contentType);
-                }
+                if (SubtitleConverter.Extract(ref path, physicalPath))
+                    return Redirect(Request.GetMediaUrl(path));
             }
-            return null;
+            return HttpNotFound();
         }
 
-        public RedirectResult Audio(string path) {
+        public ActionResult Audio(string path) {
             if (!path.IsNullOrEmpty()) {
                 string physicalPath;
                 string category;
@@ -136,10 +111,10 @@ namespace efVideoTube.Controllers {
                 if (AudioExtractor.Extract(ref path, physicalPath))
                     return Redirect(Request.GetMediaUrl(path));
             }
-            return null;
+            return HttpNotFound();
         }
 
-        public JsonResult Playlist(string path, bool isAudio = false) {
+        public ActionResult Playlist(string path, bool isAudio = false) {
             if (!path.IsNullOrEmpty()) {
                 string physicalPath;
                 string category;
@@ -147,15 +122,15 @@ namespace efVideoTube.Controllers {
 
                 string parent = Path.GetDirectoryName(physicalPath);
                 return Json(from m in GetFiles(new DirectoryInfo(parent), category)
-                            where m.PathForUrl.CanExtract() || (Request.GetPlayer(m.PathForUrl) == Player.Html5Audio)
+                            where AudioExtractor.CanExtract(m.PathForUrl) || (Request.GetPlayer(m.PathForUrl) == Player.Html5Audio)
                             select new {
                                 Name = Path.GetFileNameWithoutExtension(m.PathForUrl),
-                                Url = (isAudio && m.PathForUrl.CanExtract()) ?
+                                Url = (isAudio && AudioExtractor.CanExtract(m.PathForUrl)) ?
                                     Url.Action(Global.ActionName.Audio, m.PathForUrl.GetRouteValues()) :
                                     Request.GetMediaUrl(m.PathForUrl)
                             });
             }
-            return null;
+            return HttpNotFound();
         }
 
         public ViewResult Settings() {

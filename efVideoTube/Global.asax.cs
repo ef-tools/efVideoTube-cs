@@ -14,7 +14,7 @@ namespace efVideoTube {
         public static void RegisterBundles(BundleCollection bundles) {
             bundles.Add(new ScriptBundle("~/js/site").Include(
                 "~/Scripts/jquery-1.11.1.min.js",
-                "~/Scripts/jquery.explorer.js"));
+                "~/Scripts/jquery.efvt.js"));
 
             bundles.Add(new StyleBundle("~/css/site").Include(
                 "~/Content/Site.css"));

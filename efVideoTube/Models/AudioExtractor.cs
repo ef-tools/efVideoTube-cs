@@ -9,23 +9,23 @@ using PureLib.Common;
 
 namespace efVideoTube.Models {
     public static class AudioExtractor {
-        private static Dictionary<string, AudioConfig> _conversions = new Dictionary<string, AudioConfig>(StringComparer.OrdinalIgnoreCase) { 
+        private static Dictionary<string, AudioConfig> _conversions = new Dictionary<string, AudioConfig>(StringComparer.OrdinalIgnoreCase) {
             { ".mp4", new AudioConfig(".m4a", ConfigurationManager.AppSettings["mp4box"],
-                "-add \"{0}\"#audio \"{1}\"") },
+                ConfigurationManager.AppSettings["mp4boxArgsFormat"]) },
             { ".webm", new AudioConfig(".webm", ConfigurationManager.AppSettings["mkvtoolnix"],
-                "-o \"{1}\" -a 1 -D -S -T --no-global-tags --no-chapters \"{0}\"") }
+                ConfigurationManager.AppSettings["mkvtoolnixArgsFormat"]) }
         };
 
-        public static bool CanExtract(this string path) {
+        public static bool CanExtract(string path) {
             return _conversions.ContainsKey(Path.GetExtension(path));
         }
 
         public static bool Extract(ref string path, string physicalPath) {
-            if (!path.CanExtract())
+            if (!File.Exists(physicalPath) || !CanExtract(path))
                 return false;
 
             AudioConfig config = _conversions[Path.GetExtension(path)];
-            path = "{0}{1}{2}".FormatWith(Global.TempAudioCategory,
+            path = "{0}{1}{2}".FormatWith(Global.VideoCacheCategory,
                 Path.DirectorySeparatorChar, Path.ChangeExtension(path, config.DestExt));
             string audioPhysicalPath;
             string category;

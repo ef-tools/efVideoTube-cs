@@ -28,7 +28,7 @@
     <tr>
         <td>@Html.ActionLink(Path.GetFileName(f.PathForUrl), Global.ActionName.Play, f.PathForUrl.GetRouteValues())</td>
         <td class="right">@f.Size.ToFriendlyString()</td>
-        @if (f.PathForUrl.CanExtract()) {
+        @if (AudioExtractor.CanExtract(f.PathForUrl)) {
             <td>@Html.ActionLink("Audio", Global.ActionName.Play, f.PathForUrl.GetRouteValues(true))</td>
         }
     </tr>

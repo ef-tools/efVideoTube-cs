@@ -125,6 +125,7 @@
     <Compile Include="Models\ListModel.cs" />
     <Compile Include="Models\MediaModel.cs" />
     <Compile Include="Models\Player.cs" />
+    <Compile Include="Models\SubtitleConverter.cs" />
     <Compile Include="Models\SubtitleLanguageParser.cs" />
     <Compile Include="Models\Media.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -159,12 +160,6 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\mp4tools\SrtLib\SrtLib.csproj">
-      <Project>{9e76cd70-44a5-419f-a6f3-1106b0516a66}</Project>
-      <Name>SrtLib</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

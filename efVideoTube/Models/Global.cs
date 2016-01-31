@@ -11,16 +11,12 @@ using PureLib.Common;
 
 namespace efVideoTube.Models {
     public static class Global {
-        public const string TempAudioCategory = "TempAudio";
-        public const string VttExt = ".vtt";
-        public static string[] SupportedSubtitles { get; private set; }
+        public const string VideoCacheCategory = "efvtCache";
         public static Dictionary<string, string> CategoryPathMaps { get; private set; }
 
         static Global() {
-            SupportedSubtitles = new string[] { ".srt", ".ass", ".ssa" };
-
             CategoryPathMaps = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) {
-                { TempAudioCategory, ConfigurationManager.AppSettings["tempAudioCategory"] },
+                { VideoCacheCategory, ConfigurationManager.AppSettings["videoCacheDir"] },
             };
             foreach (string pair in ConfigurationManager.AppSettings["categories"].Split('|')) {
                 string[] map = pair.Split(',');
@@ -61,7 +57,7 @@ namespace efVideoTube.Models {
             string ext = Path.GetExtension(path);
             if (!Media.SupportedMedia.ContainsKey(ext))
                 return Player.None;
-            if (path.StartsWith(Global.TempAudioCategory, StringComparison.OrdinalIgnoreCase))
+            if (path.StartsWith(Global.VideoCacheCategory, StringComparison.OrdinalIgnoreCase))
                 return Player.Html5Audio;
 
             HttpCookie cookie = request.Cookies[ext];
