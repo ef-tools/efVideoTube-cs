@@ -113,7 +113,7 @@ namespace efVideoTube.Controllers {
             return HttpNotFound();
         }
 
-        public ActionResult Playlist(string path, bool isAudio = false) {
+        public ActionResult Playlist(string path) {
             if (!path.IsNullOrEmpty()) {
                 string physicalPath;
                 string category;
@@ -121,10 +121,11 @@ namespace efVideoTube.Controllers {
 
                 string parent = Path.GetDirectoryName(physicalPath);
                 return Json(from m in GetFiles(new DirectoryInfo(parent), category)
-                            where AudioExtractor.CanExtract(m.PathForUrl) || (Request.GetPlayer(m.PathForUrl) == Player.Html5Audio)
+                            let canExtract = AudioExtractor.CanExtract(m.PathForUrl)
+                            where canExtract || (Request.GetPlayer(m.PathForUrl) == Player.Html5Audio)
                             select new {
                                 Name = Path.GetFileNameWithoutExtension(m.PathForUrl),
-                                Url = (isAudio && AudioExtractor.CanExtract(m.PathForUrl)) ?
+                                Url = canExtract ?
                                     Url.Action(Global.ActionName.Audio, m.PathForUrl.GetRouteValues()) :
                                     Request.GetMediaUrl(m.PathForUrl)
                             });

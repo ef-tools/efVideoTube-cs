@@ -43,8 +43,7 @@
         traditional: true,
         dataType: "json",
         data: {
-            path: getUrlParameter('path'),
-            isAudio: true
+            path: getUrlParameter('path')
         },
         success: function (response) {
             list = response;
