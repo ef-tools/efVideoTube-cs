@@ -12,7 +12,7 @@ namespace efVideoTube.Models {
         private static Dictionary<string, AudioConfig> _conversions = new Dictionary<string, AudioConfig>(StringComparer.OrdinalIgnoreCase) {
             { ".mp4", new AudioConfig(".m4a", ConfigurationManager.AppSettings["mp4box"],
                 ConfigurationManager.AppSettings["mp4boxArgsFormat"]) },
-            { ".webm", new AudioConfig(".webm", ConfigurationManager.AppSettings["mkvtoolnix"],
+            { ".webm", new AudioConfig(".weba", ConfigurationManager.AppSettings["mkvtoolnix"],
                 ConfigurationManager.AppSettings["mkvtoolnixArgsFormat"]) }
         };
 
