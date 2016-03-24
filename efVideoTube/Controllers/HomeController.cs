@@ -8,7 +8,6 @@ using System.Web;
 using System.Web.Mvc;
 using efVideoTube.Models;
 using PureLib.Common;
-using IOFile = System.IO.File;
 
 namespace efVideoTube.Controllers {
     [Authorize]

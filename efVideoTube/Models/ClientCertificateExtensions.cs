@@ -10,24 +10,29 @@ using PureLib.Common;
 
 namespace efVideoTube.Models {
     public static class ClientCertificateExtensions {
-        public static bool CertAuth(this HttpRequestBase request, string issuer = null) {
-            if (Debugger.IsAttached)
+        public static bool CertAuth(this HttpRequestBase request, string issuer) {
+            if (Debugger.IsAttached) {
                 FormsAuthentication.SetAuthCookie("Debug", false, request.ApplicationPath);
+                return true;
+            }
 
             HttpClientCertificate cert = request.ClientCertificate;
-            if (ValidateClientCertificate(cert, issuer))
+            if (ValidateClientCertificate(cert, issuer)) {
                 FormsAuthentication.SetAuthCookie(cert.Subject.Substring("CN=".Length), false, request.ApplicationPath);
-            else
-                return false;
+                return true;
+            }
 
-            return true;
+            return false;
         }
 
         private static bool ValidateClientCertificate(HttpClientCertificate cert, string issuer) {
+            if (issuer.IsNullOrEmpty())
+                return true;
+
             if ((cert == null) || !cert.IsValid)
                 return false;
 
-            if (!issuer.IsNullOrEmpty() && !cert.BinaryIssuer.ToHexString().Equals(issuer, StringComparison.OrdinalIgnoreCase))
+            if (!cert.BinaryIssuer.ToHexString().Equals(issuer, StringComparison.OrdinalIgnoreCase))
                 return false;
 
             return true;
