@@ -35,26 +35,32 @@ efVideoTube (C#) is a website for listing and playing videos and music on the di
 ## External Dependencies
 
 The website depends on following external applications to make specific function work.
-The path of these applications could be configured in `web.config`.
+The pathes of these applications could be configured under `web.config`.
 
 - `mp4box`
+
     For extracting audio from mp4 videos.
     https://gpac.wp.mines-telecom.fr/mp4box/
 
 - `mkvtoolnix`
+
     For extracting audio from webm videos.
     https://mkvtoolnix.download/
 
 - `ass2srt`
+
     For converting `.ass`, `.ssa` and `.srt` subtitles to webvtt.
     *Will be published to github soon.*
 
 
 ## Deployment
 
-- You have to add media folders as Virtual Directories in the site under IIS to make media hosting work.
-- You also have to create another Virtual Directory named `efvtCache` for hosting extracted audio and subtitles.
-- At last, you may need set a few MIME types for media and subtitles based on which version of IIS you are using.
+All configurations could be found in `appSettings` section of `web.config`.
+
+You have to add media folders as Virtual Directories in the site under IIS to make media hosting work, these media folders should also be set in `categories` setting.
+You also have to create another Virtual Directory named `efvtCache` for hosting extracted audio and converted subtitles, the path of this directory should also be set in `videoCacheDir` setting.
+You need to remove `issuer` setting if you don't use client certificate to authenticate users.
+At last, you may need to set a few MIME types for media and subtitles based on which version of IIS you are using.
 
 File    | MIME
 ------- | --------------------
