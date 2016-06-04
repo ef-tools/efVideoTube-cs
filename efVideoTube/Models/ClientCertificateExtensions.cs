@@ -23,11 +23,12 @@ namespace efVideoTube.Models {
             if (Debugger.IsAttached)
                 return "Debug";
 
+            if (cert != null && cert.IsValid && !cert.Subject.IsNullOrEmpty() && (issuer.IsNullOrEmpty() ||
+                    cert.BinaryIssuer.ToHexString().Equals(issuer, StringComparison.OrdinalIgnoreCase)))
+                return cert.Subject.Substring("CN=".Length);
+
             if (issuer.IsNullOrEmpty())
                 return "Guest";
-
-            if (cert != null && cert.IsValid && cert.BinaryIssuer.ToHexString().Equals(issuer, StringComparison.OrdinalIgnoreCase))
-                return cert.Subject.Substring("CN=".Length);
 
             return null;
         }
