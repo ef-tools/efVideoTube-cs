@@ -2,7 +2,10 @@ $(document).ready(function () {
     var video = $('video');
     var getFileName = function (url) {
         var path = getParameter('path', url);
-        return path.substring(path.lastIndexOf('\\') + 1);
+        var index = path.lastIndexOf('\\');
+        if (index < path.length - 1)
+            index++;
+        return path.substring(index);
     };
 
     var lineFormat = '<p>{0}:<br /><a href="{1}">{2}</a></p>';
