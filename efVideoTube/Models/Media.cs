@@ -9,7 +9,7 @@ namespace efVideoTube.Models {
     public class Media {
         public static Dictionary<string, Media> SupportedMedia { get; private set; }
         public static Player[] Players { get; private set; }
-        
+
         public string Extension { get; private set; }
         public Player Player { get; private set; }
         public Player[] AvailablePlayers { get; private set; }
@@ -22,6 +22,7 @@ namespace efVideoTube.Models {
                 new Media(".wmv", Player.Silverlight),
                 new Media(".flv", Player.Flash),
                 new Media(".m4a", Player.Html5Audio, Player.Silverlight),
+                new Media(".weba", Player.Html5Audio, Player.Silverlight),
                 new Media(".mp3", Player.Html5Audio, Player.Silverlight),
             }.ToDictionary(m => m.Extension, m => m, StringComparer.OrdinalIgnoreCase);
         }
